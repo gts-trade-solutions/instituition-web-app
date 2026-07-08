@@ -3,7 +3,11 @@ import { getSiteContent } from "@/lib/content";
 import { LegalHero } from "@/components/LegalHero";
 import { LegalBody, LegalSection } from "@/components/LegalBody";
 
-export const metadata: Metadata = { title: "Terms of Use" };
+export const metadata: Metadata = {
+  title: "Terms of Use",
+  description:
+    "The terms of use governing registration for and participation in AI Institute for Native Americans seminars.",
+};
 
 export default async function TermsPage() {
   const site = await getSiteContent();
@@ -28,7 +32,7 @@ export default async function TermsPage() {
           <ul>
             <li>Registration is confirmed once payment is successfully completed.</li>
             <li>The standard seminar fee is $1,595 per participant unless otherwise stated; group rates may apply.</li>
-            <li>Payments are processed securely through Stripe.</li>
+            <li>Payments are processed securely through PayPal.</li>
             <li>Seats are limited and offered on a first-come, first-served basis.</li>
           </ul>
         </LegalSection>

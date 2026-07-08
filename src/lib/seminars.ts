@@ -32,9 +32,13 @@ const FALLBACK: SeminarDTO[] = [
 export async function getUpcomingSeminars(limit?: number): Promise<SeminarDTO[]> {
   try {
     const rows = await prisma.seminar.findMany({
-      where: { published: true, endDate: { gte: new Date("2026-01-01") } },
+      where: { published: true, endDate: { gte: new Date() } },
       orderBy: { startDate: "asc" },
-      include: { _count: { select: { registrations: true } } },
+      // Only confirmed (PAID) registrations consume a seat — abandoned checkouts
+      // (PENDING) and CANCELLED rows must not make a seminar look full.
+      include: {
+        _count: { select: { registrations: { where: { status: "PAID" } } } },
+      },
       ...(limit ? { take: limit } : {}),
     });
     if (rows.length === 0) return limit ? FALLBACK.slice(0, limit) : FALLBACK;

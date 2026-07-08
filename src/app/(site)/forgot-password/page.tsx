@@ -22,14 +22,14 @@ export default function ForgotPasswordPage() {
       }
     >
       {state.ok ? (
-        <div className="flex items-start gap-3 rounded-md bg-teal-600/10 px-4 py-4 text-sm text-teal-700">
+        <div role="status" className="flex items-start gap-3 rounded-md bg-teal-600/10 px-4 py-4 text-sm text-teal-700">
           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" />
           <p>{state.message}</p>
         </div>
       ) : (
         <form action={action} className="space-y-5">
           {state.error && (
-            <div className="flex items-center gap-2 rounded-md bg-rust-500/10 px-4 py-3 text-sm text-rust-600">
+            <div role="alert" className="flex items-center gap-2 rounded-md bg-rust-500/10 px-4 py-3 text-sm text-rust-600">
               <AlertCircle className="h-4 w-4 shrink-0" />
               {state.error}
             </div>

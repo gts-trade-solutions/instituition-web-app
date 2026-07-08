@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { XCircle, Users, Feather } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { getPageContent } from "@/lib/content";
 import { getUpcomingSeminars } from "@/lib/seminars";
-import { isStripeEnabled } from "@/lib/stripe";
+import { isPayPalEnabled } from "@/lib/paypal";
+import { getUser } from "@/lib/user-auth";
 import { WovenBorder } from "@/components/WovenBorder";
 import { RegisterForm } from "./RegisterForm";
 
@@ -15,6 +17,11 @@ export default async function RegisterPage({
 }: {
   searchParams: Promise<{ seminar?: string; cause?: string; canceled?: string }>;
 }) {
+  // Registration requires an account — send anonymous visitors to sign up first,
+  // then bring them back here once they have an account.
+  const user = await getUser();
+  if (!user) redirect("/signup?redirect=/register");
+
   const sp = await searchParams;
   const c = await getPageContent("register");
   const seminars = await getUpcomingSeminars();
@@ -87,7 +94,9 @@ export default async function RegisterPage({
               seminars={options}
               defaultSeminarId={sp.seminar}
               defaultCause={sp.cause}
-              stripeEnabled={isStripeEnabled}
+              defaultName={user.name}
+              defaultEmail={user.email}
+              paymentProvider={isPayPalEnabled ? "PayPal" : null}
             />
           </div>
 

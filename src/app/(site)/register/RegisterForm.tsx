@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { type ChangeEvent, useActionState, useState } from "react";
 import {
   Lock,
   AlertCircle,
@@ -33,15 +33,6 @@ const roles = [
   "Other",
 ];
 
-const describeOptions = [
-  "Finance & Accounting",
-  "Workforce / Education",
-  "Grants & Program Manager",
-  "Tribal Member / Job Seeker",
-  "Enterprise & Operations",
-  "Other",
-];
-
 const causeDefs = [
   {
     key: "women",
@@ -71,8 +62,20 @@ const causeDefs = [
 
 const initial: RegisterState = {};
 
+/** Map a ?cause= label (from a Causes page link) to a contribution key, if any. */
+function matchCauseKey(label?: string): string | null {
+  if (!label) return null;
+  const l = label.trim().toLowerCase();
+  const hit = causeDefs.find((c) => {
+    const n = c.name.toLowerCase();
+    return n === l || n.includes(l) || l.includes(n);
+  });
+  return hit?.key ?? null;
+}
+
 function weekdayRange(startISO: string, endISO: string) {
-  const opt = { weekday: "long" } as const;
+  // Dates are UTC midnight — format in UTC so the weekday doesn't shift a day.
+  const opt = { weekday: "long", timeZone: "UTC" } as const;
   const s = new Date(startISO).toLocaleDateString("en-US", opt);
   const e = new Date(endISO).toLocaleDateString("en-US", opt);
   return `${s} – ${e}`;
@@ -81,16 +84,26 @@ function weekdayRange(startISO: string, endISO: string) {
 export function RegisterForm({
   seminars,
   defaultSeminarId,
-  stripeEnabled,
+  defaultCause,
+  defaultName,
+  defaultEmail,
+  paymentProvider,
 }: {
   seminars: SeminarOption[];
   defaultSeminarId?: string;
   defaultCause?: string;
-  stripeEnabled: boolean;
+  defaultName?: string;
+  defaultEmail?: string;
+  /** Active gateway label ("PayPal"), or null for demo mode. */
+  paymentProvider: string | null;
 }) {
   const [state, action, pending] = useActionState(submitRegistration, initial);
+  // Only accept a default that maps to a real radio, otherwise the posted
+  // seminarId and the displayed seat price can silently diverge.
   const [seminarId, setSeminarId] = useState(
-    defaultSeminarId ?? seminars[0]?.id ?? "",
+    seminars.some((s) => s.id === defaultSeminarId)
+      ? (defaultSeminarId as string)
+      : (seminars[0]?.id ?? ""),
   );
   const [contrib, setContrib] = useState<Record<string, string>>({
     women: "",
@@ -98,6 +111,11 @@ export function RegisterForm({
     sovereignty: "",
     custom: "",
   });
+
+  // Cause the visitor arrived to support (from a "Causes & Giving" link,
+  // e.g. /register?cause=Protecting%20Our%20Water). Highlighted below and
+  // recorded even if no money is contributed, so their intent isn't lost.
+  const preselectedCauseKey = matchCauseKey(defaultCause);
 
   const selected = seminars.find((s) => s.id === seminarId) ?? seminars[0];
   const seatPrice = selected?.priceCents ?? 159500;
@@ -107,22 +125,32 @@ export function RegisterForm({
   );
   const totalCents = seatPrice + contribCents;
   const selectedCauses = causeDefs
-    .filter((c) => (parseFloat(contrib[c.key] || "0") || 0) > 0)
+    .filter(
+      (c) =>
+        c.key === preselectedCauseKey ||
+        (parseFloat(contrib[c.key] || "0") || 0) > 0,
+    )
     .map((c) => c.name);
+
+  // Mirror the server-side contribution cap ($10,000) so the user gets inline
+  // feedback instead of a generic error after submitting.
+  const MAX_CONTRIB_CENTS = 10_000_00;
+  const contribTooHigh = contribCents > MAX_CONTRIB_CENTS;
 
   return (
     <form
       action={action}
       className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start"
     >
-      {/* Hidden values the server action needs */}
-      <input type="hidden" name="amountCents" value={totalCents} />
+      {/* Hidden values the server action needs. The seat fee is derived
+          server-side from seminarId — only the optional contribution is sent. */}
+      <input type="hidden" name="contributionCents" value={contribCents} />
       <input type="hidden" name="cause" value={selectedCauses.join(", ")} />
 
       {/* ── Left column ─────────────────────────────────────────── */}
       <div className="space-y-8">
         {state.error && (
-          <div className="flex items-center gap-2 rounded-xl bg-rust-500/10 px-4 py-3 text-sm text-rust-600">
+          <div role="alert" className="flex items-center gap-2 rounded-xl bg-rust-500/10 px-4 py-3 text-sm text-rust-600">
             <AlertCircle className="h-4 w-4 shrink-0" />
             {state.error}
           </div>
@@ -132,19 +160,19 @@ export function RegisterForm({
 
         <div className="space-y-5">
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Full Name" name="fullName" required error={state.fieldErrors?.fullName} />
-            <Field label="Email Address" name="email" type="email" required error={state.fieldErrors?.email} />
+            <Field label="Full Name" name="fullName" required defaultValue={defaultName} error={state.fieldErrors?.fullName} />
+            <Field label="Email Address" name="email" type="email" required defaultValue={defaultEmail} error={state.fieldErrors?.email} />
           </div>
           <Field label="Phone Number" name="phone" type="tel" required />
           <Field label="Organization / Tribe" name="organization" required />
 
           <div>
             <label htmlFor="role" className="field-label">
-              Job Title / Role <span className="text-rust-500">*</span>
+              Which best describes you? <span className="text-rust-500">*</span>
             </label>
             <select id="role" name="role" className="field-input" defaultValue="" required>
               <option value="" disabled>
-                Select your role
+                Select the option that best fits your role
               </option>
               {roles.map((r) => (
                 <option key={r} value={r}>
@@ -153,30 +181,11 @@ export function RegisterForm({
               ))}
             </select>
           </div>
-
-          <div>
-            <p className="field-label">
-              Which best describes you? <span className="text-rust-500">*</span>
-            </p>
-            <div className="mt-1 grid gap-3 sm:grid-cols-2">
-              {describeOptions.map((o) => (
-                <label key={o} className="flex items-center gap-2.5 text-sm text-ink">
-                  <input
-                    type="radio"
-                    name="descriptor"
-                    value={o}
-                    required
-                    className="h-4 w-4 border-cream-300 text-teal-600 focus:ring-teal-500"
-                  />
-                  {o}
-                </label>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Seminar dates */}
-        <div id="dates" className="scroll-mt-28 space-y-4">
+        <fieldset id="dates" className="scroll-mt-28 space-y-4">
+          <legend className="sr-only">Select a seminar date</legend>
           <SectionHeader icon={Calendar} title="Select Seminar Date" />
           <div className="space-y-3">
             {seminars.map((s) => {
@@ -217,7 +226,7 @@ export function RegisterForm({
               Your information is secure and will never be shared. We respect your privacy.
             </p>
           </div>
-        </div>
+        </fieldset>
       </div>
 
       {/* ── Right column ────────────────────────────────────────── */}
@@ -277,25 +286,43 @@ export function RegisterForm({
           </div>
 
           <div className="space-y-4">
-            {causeDefs.map((c) => (
-              <div key={c.key} className="flex items-start gap-3">
-                <span className={`mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full text-cream-50 ${c.ring}`}>
-                  <c.Icon className="h-5 w-5" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className={`text-sm font-semibold ${c.text}`}>{c.name}</p>
-                  <p className="text-xs text-ink-soft">{c.desc}</p>
+            {causeDefs.map((c) => {
+              const preselected = c.key === preselectedCauseKey;
+              return (
+                <div
+                  key={c.key}
+                  className={`flex items-start gap-3 ${
+                    preselected
+                      ? "-mx-2 rounded-lg bg-teal-50/70 px-2 py-2 ring-1 ring-teal-600/40"
+                      : ""
+                  }`}
+                >
+                  <span className={`mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full text-cream-50 ${c.ring}`}>
+                    <c.Icon className="h-5 w-5" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className={`text-sm font-semibold ${c.text}`}>{c.name}</p>
+                    {preselected ? (
+                      <p className="text-xs font-medium text-teal-700">
+                        You&apos;re supporting this cause — add an optional contribution.
+                      </p>
+                    ) : (
+                      <p className="text-xs text-ink-soft">{c.desc}</p>
+                    )}
+                  </div>
+                  <AmountInput
+                    label={`Contribution to ${c.name}`}
+                    value={contrib[c.key]}
+                    onChange={(v) => setContrib((prev) => ({ ...prev, [c.key]: v }))}
+                  />
                 </div>
-                <AmountInput
-                  value={contrib[c.key]}
-                  onChange={(v) => setContrib((prev) => ({ ...prev, [c.key]: v }))}
-                />
-              </div>
-            ))}
+              );
+            })}
 
             <div className="flex items-center justify-between gap-3 border-t border-cream-200 pt-4">
               <p className="text-sm text-ink">Custom Amount (optional)</p>
               <AmountInput
+                label="Custom contribution amount"
                 value={contrib.custom}
                 onChange={(v) => setContrib((prev) => ({ ...prev, custom: v }))}
               />
@@ -330,9 +357,17 @@ export function RegisterForm({
             </span>
           </div>
 
+          {contribTooHigh && (
+            <p className="flex items-center gap-2 rounded-md bg-rust-500/10 px-3 py-2 text-xs text-rust-600" role="alert">
+              <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+              Contributions can total at most {formatCurrency(MAX_CONTRIB_CENTS)}. Please
+              lower the amount.
+            </p>
+          )}
+
           <button
             type="submit"
-            disabled={pending || totalCents < 100}
+            disabled={pending || totalCents < 100 || contribTooHigh}
             className="btn-accent w-full"
           >
             <Lock className="h-4 w-4" />
@@ -341,8 +376,8 @@ export function RegisterForm({
 
           <p className="flex items-center justify-center gap-2 text-center text-xs text-ink-soft">
             <Lock className="h-3.5 w-3.5 text-teal-600" />
-            {stripeEnabled
-              ? "Secure, encrypted checkout powered by Stripe."
+            {paymentProvider
+              ? `Secure, encrypted checkout powered by ${paymentProvider}.`
               : "Demo mode — no real charge will be made."}
           </p>
         </div>
@@ -370,22 +405,70 @@ function SectionHeader({
   );
 }
 
+/** Keep only digits and a single decimal point, capped at 2 decimal places. */
+function sanitizeAmount(raw: string): string {
+  let v = raw.replace(/[^\d.]/g, "");
+  const dot = v.indexOf(".");
+  if (dot !== -1) {
+    const intPart = v.slice(0, dot);
+    const decPart = v.slice(dot + 1).replace(/\./g, "").slice(0, 2);
+    v = `${intPart}.${decPart}`;
+  }
+  return v;
+}
+
+/** Add thousands separators to the integer part (kicks in at 1,000+). */
+function withCommas(clean: string): string {
+  if (clean === "") return "";
+  const [intPart, decPart] = clean.split(".");
+  const grouped = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return clean.includes(".") ? `${grouped}.${decPart ?? ""}` : grouped;
+}
+
+/** Currency input: displays cents + comma separators, reports a clean numeric string. */
 function AmountInput({
   value,
   onChange,
+  label,
 }: {
   value: string;
   onChange: (v: string) => void;
+  label: string;
 }) {
+  const [display, setDisplay] = useState(() => withCommas(value));
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const clean = sanitizeAmount(e.target.value);
+    onChange(clean);
+    setDisplay(withCommas(clean));
+  }
+
+  function handleBlur() {
+    if (value === "") {
+      setDisplay("");
+      return;
+    }
+    const n = parseFloat(value) || 0;
+    // Always show cents (two decimals) and commas so amounts read unambiguously.
+    setDisplay(
+      n.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    );
+    onChange(n.toFixed(2));
+  }
+
   return (
     <div className="flex shrink-0 items-center gap-1">
-      <span className="text-sm text-ink-soft">$</span>
+      <span className="text-sm text-ink-soft" aria-hidden="true">$</span>
       <input
-        type="number"
-        min="0"
-        step="0.01"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        type="text"
+        inputMode="decimal"
+        aria-label={label}
+        value={display}
+        onChange={handleChange}
+        onBlur={handleBlur}
         placeholder="0.00"
         className="w-24 rounded-lg border border-cream-300 bg-white px-3 py-2 text-right text-sm focus:border-teal-500 focus:ring-teal-500"
       />
@@ -398,12 +481,14 @@ function Field({
   name,
   type = "text",
   required,
+  defaultValue,
   error,
 }: {
   label: string;
   name: string;
   type?: string;
   required?: boolean;
+  defaultValue?: string;
   error?: string;
 }) {
   return (
@@ -411,7 +496,14 @@ function Field({
       <label htmlFor={name} className="field-label">
         {label} {required && <span className="text-rust-500">*</span>}
       </label>
-      <input id={name} name={name} type={type} required={required} className="field-input" />
+      <input
+        id={name}
+        name={name}
+        type={type}
+        required={required}
+        defaultValue={defaultValue}
+        className="field-input"
+      />
       {error && <p className="mt-1 text-xs text-rust-600">{error}</p>}
     </div>
   );

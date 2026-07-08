@@ -13,7 +13,11 @@ import { getPageContent } from "@/lib/content";
 import { Reveal } from "@/components/Reveal";
 import { WovenBorder } from "@/components/WovenBorder";
 
-export const metadata: Metadata = { title: "Why It Matters" };
+export const metadata: Metadata = {
+  title: "Why It Matters",
+  description:
+    "Why AI and financial skills matter for Native American communities, sovereignty, and economic opportunity.",
+};
 
 const empowers = [
   { icon: Landmark, tint: "bg-teal-600", title: "Govern Ourselves", body: "Make decisions that reflect our values, traditions, and the needs of our people." },

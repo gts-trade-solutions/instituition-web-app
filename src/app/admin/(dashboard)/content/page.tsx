@@ -21,7 +21,7 @@ function humanize(key: string) {
     .trim();
 }
 
-const MULTILINE = /body|subtitle|subtive|missionBody|heroSubtitle|ctaSubtitle/i;
+const MULTILINE = /body|subtitle|intro|missionBody|heroSubtitle|ctaSubtitle/i;
 
 export default async function ContentPage() {
   requireAdminFeature("content");
@@ -40,12 +40,17 @@ export default async function ContentPage() {
       return {
         page: page as string,
         label: PAGE_LABELS[page] ?? humanize(page),
-        fields: Object.entries(defaults).map(([key, def]) => ({
-          key,
-          label: humanize(key),
-          value: overrides.get(`${page}:${key}`) ?? def,
-          multiline: MULTILINE.test(key) || def.length > 80,
-        })),
+        fields: Object.entries(defaults).map(([key, def]) => {
+          // Match the public site: an empty stored override falls back to the
+          // default, so the editor shows what visitors actually see.
+          const stored = overrides.get(`${page}:${key}`);
+          return {
+            key,
+            label: humanize(key),
+            value: stored != null && stored !== "" ? stored : def,
+            multiline: MULTILINE.test(key) || def.length > 80,
+          };
+        }),
       };
     },
   );

@@ -7,9 +7,23 @@ import { prisma } from "./prisma";
 import { hashPassword, verifyPassword } from "./auth";
 
 const COOKIE_NAME = "ai_user_session";
-const secret = new TextEncoder().encode(
-  process.env.AUTH_SECRET ?? "dev-insecure-secret-change-me",
-);
+const ISSUER = "aiinstitute";
+const AUDIENCE = "aiinstitute:user";
+
+/** Signing key. Missing AUTH_SECRET is fatal in production (never use a repo default). */
+function loadSecret(): Uint8Array {
+  const s = process.env.AUTH_SECRET;
+  if (!s || s.length < 16) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "AUTH_SECRET must be set to a strong value (>=16 chars) in production.",
+      );
+    }
+    return new TextEncoder().encode("dev-insecure-secret-change-me");
+  }
+  return new TextEncoder().encode(s);
+}
+const secret = loadSecret();
 
 export type UserSession = {
   userId: string;
@@ -23,6 +37,8 @@ export async function createUserSession(payload: UserSession): Promise<void> {
   const token = await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
+    .setIssuer(ISSUER)
+    .setAudience(AUDIENCE)
     .setExpirationTime("30d")
     .sign(secret);
 
@@ -46,8 +62,19 @@ export async function getUser(): Promise<UserSession | null> {
   const token = cookieStore.get(COOKIE_NAME)?.value;
   if (!token) return null;
   try {
-    const { payload } = await jwtVerify(token, secret);
-    return payload as unknown as UserSession;
+    const { payload } = await jwtVerify(token, secret, {
+      algorithms: ["HS256"],
+      issuer: ISSUER,
+      audience: AUDIENCE,
+    });
+    if (
+      typeof payload.userId !== "string" ||
+      typeof payload.email !== "string" ||
+      typeof payload.name !== "string"
+    ) {
+      return null;
+    }
+    return { userId: payload.userId, email: payload.email, name: payload.name };
   } catch {
     return null;
   }
@@ -63,6 +90,11 @@ export async function requireUser(): Promise<UserSession> {
 /* ─── Accounts ─────────────────────────────────────────────── */
 
 const normalizeEmail = (email: string) => email.toLowerCase().trim();
+
+// Compared against on the not-found path so login timing doesn't reveal
+// whether an account exists.
+let dummyHash: Promise<string> | null = null;
+const getDummyHash = () => (dummyHash ??= hashPassword("timing-equalizer"));
 
 export async function registerUser(
   name: string,
@@ -91,10 +123,84 @@ export async function authenticateUser(
   const user = await prisma.user.findUnique({
     where: { email: normalizeEmail(email) },
   });
-  if (!user) return null;
+  if (!user) {
+    await verifyPassword(password, await getDummyHash());
+    return null;
+  }
   const ok = await verifyPassword(password, user.passwordHash);
   if (!ok) return null;
   return { userId: user.id, email: user.email, name: user.name };
+}
+
+/* ─── Account details ──────────────────────────────────────── */
+
+export type AccountRegistration = {
+  id: string;
+  status: "PENDING" | "PAID" | "CANCELLED";
+  amountCents: number;
+  cause: string | null;
+  createdAt: Date;
+  seminarTitle: string | null;
+  seminarStart: Date | null;
+  seminarEnd: Date | null;
+  seminarLocation: string | null;
+};
+
+export type AccountDetails = {
+  memberSince: Date | null;
+  registrations: AccountRegistration[];
+};
+
+/**
+ * Loads the profile extras for the account page: when the user joined and the
+ * seminar registrations tied to their email. Degrades gracefully (empty data)
+ * if the database is unreachable.
+ */
+export async function getAccountDetails(
+  session: UserSession,
+): Promise<AccountDetails> {
+  try {
+    const [user, regs] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: session.userId },
+        select: { createdAt: true },
+      }),
+      prisma.registration.findMany({
+        // Primarily linked by account id; fall back to email so registrations
+        // created before the userId link (or under a differently-cased email)
+        // still surface here.
+        where: {
+          OR: [
+            { userId: session.userId },
+            { email: normalizeEmail(session.email) },
+          ],
+        },
+        orderBy: { createdAt: "desc" },
+        include: {
+          seminar: {
+            select: { title: true, startDate: true, endDate: true, location: true },
+          },
+        },
+      }),
+    ]);
+
+    return {
+      memberSince: user?.createdAt ?? null,
+      registrations: regs.map((r) => ({
+        id: r.id,
+        status: r.status,
+        amountCents: r.amountCents,
+        cause: r.cause,
+        createdAt: r.createdAt,
+        seminarTitle: r.seminar?.title ?? null,
+        seminarStart: r.seminar?.startDate ?? null,
+        seminarEnd: r.seminar?.endDate ?? null,
+        seminarLocation: r.seminar?.location ?? null,
+      })),
+    };
+  } catch {
+    return { memberSince: null, registrations: [] };
+  }
 }
 
 /* ─── Password reset ───────────────────────────────────────── */

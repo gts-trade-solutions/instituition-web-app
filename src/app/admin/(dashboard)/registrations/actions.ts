@@ -3,14 +3,22 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
-import type { RegistrationStatus } from "@/generated/prisma/client";
+import { requireAdminFeature } from "@/lib/adminFeatures";
+
+const STATUSES = ["PENDING", "PAID", "CANCELLED"] as const;
 
 export async function updateRegistrationStatus(formData: FormData) {
   await requireAdmin();
+  requireAdminFeature("registrations");
   const id = formData.get("id") as string;
-  const status = formData.get("status") as RegistrationStatus;
+  const status = formData.get("status");
+  // Never write an unvalidated value into the enum column.
+  if (typeof status !== "string" || !STATUSES.includes(status as never)) return;
   try {
-    await prisma.registration.update({ where: { id }, data: { status } });
+    await prisma.registration.update({
+      where: { id },
+      data: { status: status as (typeof STATUSES)[number] },
+    });
   } catch {
     // ignore
   }
@@ -20,6 +28,7 @@ export async function updateRegistrationStatus(formData: FormData) {
 
 export async function deleteRegistration(formData: FormData) {
   await requireAdmin();
+  requireAdminFeature("registrations");
   const id = formData.get("id") as string;
   try {
     await prisma.registration.delete({ where: { id } });
@@ -27,4 +36,5 @@ export async function deleteRegistration(formData: FormData) {
     // ignore
   }
   revalidatePath("/admin/registrations");
+  revalidatePath("/admin");
 }

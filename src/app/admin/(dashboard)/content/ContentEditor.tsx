@@ -48,15 +48,15 @@ export function ContentEditor({ pages }: { pages: PageData[] }) {
 
 function PageForm({ data }: { data: PageData }) {
   const [state, action, pending] = useActionState(saveContent, initial);
-  const [saved, setSaved] = useState(false);
-
+  // Show a success toast for 2.5s after each save. Only the (async) timer
+  // updates state, so there's no synchronous setState in the effect body.
+  const [dismissed, setDismissed] = useState<ContentState | null>(null);
   useEffect(() => {
-    if (state.ok) {
-      setSaved(true);
-      const t = setTimeout(() => setSaved(false), 2500);
-      return () => clearTimeout(t);
-    }
-  }, [state.ok]);
+    if (!state.ok) return;
+    const t = setTimeout(() => setDismissed(state), 2500);
+    return () => clearTimeout(t);
+  }, [state]);
+  const saved = state.ok && dismissed !== state;
 
   return (
     <form action={action} className="card p-6 sm:p-8">

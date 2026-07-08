@@ -8,7 +8,11 @@ import {
 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDateRange } from "@/lib/format";
-import { requireAdminFeature } from "@/lib/adminFeatures";
+import {
+  requireAdminFeature,
+  isAdminFeatureEnabled,
+  type AdminFeature,
+} from "@/lib/adminFeatures";
 
 async function getStats() {
   try {
@@ -52,12 +56,19 @@ export default async function AdminDashboard() {
   requireAdminFeature("dashboard");
   const s = await getStats();
 
-  const cards = [
-    { label: "Registrations", value: s.regCount, icon: Users, href: "/admin/registrations" },
-    { label: "Paid Revenue", value: formatCurrency(s.revenue), icon: DollarSign, href: "/admin/registrations" },
-    { label: "New Messages", value: s.newMessages, icon: MessageSquare, href: "/admin/messages" },
-    { label: "Upcoming Seminars", value: s.upcoming, icon: CalendarDays, href: "/admin/seminars" },
+  const cards: {
+    label: string;
+    value: string | number;
+    icon: typeof Users;
+    href: string;
+    feature: AdminFeature;
+  }[] = [
+    { label: "Registrations", value: s.regCount, icon: Users, href: "/admin/registrations", feature: "registrations" },
+    { label: "Paid Revenue", value: formatCurrency(s.revenue), icon: DollarSign, href: "/admin/registrations", feature: "registrations" },
+    { label: "New Messages", value: s.newMessages, icon: MessageSquare, href: "/admin/messages", feature: "messages" },
+    { label: "Upcoming Seminars", value: s.upcoming, icon: CalendarDays, href: "/admin/seminars", feature: "seminars" },
   ];
+  const showRecent = isAdminFeatureEnabled("registrations");
 
   return (
     <div className="space-y-8">
@@ -74,25 +85,40 @@ export default async function AdminDashboard() {
       )}
 
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        {cards.map((c) => (
-          <Link
-            key={c.label}
-            href={c.href}
-            className="card group flex items-center gap-4 p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft"
-          >
-            <span className="grid h-12 w-12 place-items-center rounded-xl bg-teal-50 text-teal-600">
-              <c.icon className="h-6 w-6" />
-            </span>
-            <div>
-              <p className="text-sm text-ink-soft">{c.label}</p>
-              <p className="font-display text-2xl font-semibold text-teal-800">
-                {c.value}
-              </p>
+        {cards.map((c) => {
+          const enabled = isAdminFeatureEnabled(c.feature);
+          const body = (
+            <>
+              <span className="grid h-12 w-12 place-items-center rounded-xl bg-teal-50 text-teal-600">
+                <c.icon className="h-6 w-6" />
+              </span>
+              <div>
+                <p className="text-sm text-ink-soft">{c.label}</p>
+                <p className="font-display text-2xl font-semibold text-teal-800">
+                  {c.value}
+                </p>
+              </div>
+            </>
+          );
+          // Only link cards whose section is enabled — otherwise the target
+          // route just redirects back here (a confusing dead-end).
+          return enabled ? (
+            <Link
+              key={c.label}
+              href={c.href}
+              className="card group flex items-center gap-4 p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft"
+            >
+              {body}
+            </Link>
+          ) : (
+            <div key={c.label} className="card flex items-center gap-4 p-6">
+              {body}
             </div>
-          </Link>
-        ))}
+          );
+        })}
       </div>
 
+      {showRecent && (
       <div className="card">
         <div className="flex items-center justify-between border-b border-cream-200 p-6">
           <h2 className="text-lg font-semibold text-teal-800">
@@ -126,6 +152,7 @@ export default async function AdminDashboard() {
           </div>
         )}
       </div>
+      )}
     </div>
   );
 }

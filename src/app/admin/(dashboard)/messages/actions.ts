@@ -3,14 +3,21 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
-import type { MessageStatus } from "@/generated/prisma/client";
+import { requireAdminFeature } from "@/lib/adminFeatures";
+
+const STATUSES = ["NEW", "READ", "ARCHIVED"] as const;
 
 export async function setMessageStatus(formData: FormData) {
   await requireAdmin();
+  requireAdminFeature("messages");
   const id = formData.get("id") as string;
-  const status = formData.get("status") as MessageStatus;
+  const status = formData.get("status");
+  if (typeof status !== "string" || !STATUSES.includes(status as never)) return;
   try {
-    await prisma.contactMessage.update({ where: { id }, data: { status } });
+    await prisma.contactMessage.update({
+      where: { id },
+      data: { status: status as (typeof STATUSES)[number] },
+    });
   } catch {
     // ignore
   }
@@ -20,6 +27,7 @@ export async function setMessageStatus(formData: FormData) {
 
 export async function deleteMessage(formData: FormData) {
   await requireAdmin();
+  requireAdminFeature("messages");
   const id = formData.get("id") as string;
   try {
     await prisma.contactMessage.delete({ where: { id } });
@@ -27,4 +35,5 @@ export async function deleteMessage(formData: FormData) {
     // ignore
   }
   revalidatePath("/admin/messages");
+  revalidatePath("/admin");
 }

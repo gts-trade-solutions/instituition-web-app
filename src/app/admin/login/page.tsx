@@ -24,7 +24,7 @@ export default function LoginPage() {
 
           <form action={action} className="mt-6 space-y-5">
             {state.error && (
-              <div className="flex items-center gap-2 rounded-xl bg-rust-500/10 px-4 py-3 text-sm text-rust-600">
+              <div role="alert" className="flex items-center gap-2 rounded-xl bg-rust-500/10 px-4 py-3 text-sm text-rust-600">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 {state.error}
               </div>

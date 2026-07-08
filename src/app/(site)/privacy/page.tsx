@@ -3,7 +3,11 @@ import { getSiteContent } from "@/lib/content";
 import { LegalHero } from "@/components/LegalHero";
 import { LegalBody, LegalSection } from "@/components/LegalBody";
 
-export const metadata: Metadata = { title: "Privacy Policy" };
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "How the AI Institute for Native Americans collects, uses, and protects your personal information.",
+};
 
 export default async function PrivacyPage() {
   const site = await getSiteContent();
@@ -23,7 +27,7 @@ export default async function PrivacyPage() {
           <ul>
             <li>Your name, email address, phone number, and organization or Tribe.</li>
             <li>Your role and seminar preferences.</li>
-            <li>Payment details, which are processed securely by our payment provider (Stripe). We do not store your full card number on our servers.</li>
+            <li>Payment details, which are processed securely by our payment provider (PayPal). We do not store your full card number on our servers.</li>
             <li>Messages you send us through the contact form.</li>
           </ul>
         </LegalSection>
@@ -48,9 +52,9 @@ export default async function PrivacyPage() {
 
         <LegalSection title="Payments">
           <p>
-            Payments are handled by Stripe, a PCI-compliant payment processor. Their
-            handling of your payment data is governed by Stripe&rsquo;s own privacy
-            policy.
+            Payments are handled by PayPal, a PCI-compliant payment processor.
+            Their handling of your payment data is governed by PayPal&rsquo;s own
+            privacy policy.
           </p>
         </LegalSection>
 

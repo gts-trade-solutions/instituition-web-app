@@ -7,7 +7,11 @@ import { Reveal } from "@/components/Reveal";
 import { FlourishTitle } from "@/components/Section";
 import { WovenBorder } from "@/components/WovenBorder";
 
-export const metadata: Metadata = { title: "Causes & Giving" };
+export const metadata: Metadata = {
+  title: "Causes & Giving",
+  description:
+    "Support Native American women, water, and sovereignty. 100% of contributions made during seminar registration go directly to these causes.",
+};
 
 const causes = [
   {
@@ -141,7 +145,7 @@ export default async function CausesPage() {
                     />
                   </div>
                   <Link
-                    href={`/register?cause=${cause.tag.replace(/\+/g, " ")}`}
+                    href={`/register?cause=${encodeURIComponent(cause.tag.replace(/\+/g, " "))}`}
                     className={`block py-3 text-center font-display text-sm font-semibold uppercase tracking-wide text-cream-50 transition-colors ${cause.btn}`}
                   >
                     Learn More

@@ -14,12 +14,16 @@ import {
 } from "lucide-react";
 import { getPageContent } from "@/lib/content";
 import { getUpcomingSeminars } from "@/lib/seminars";
-import { formatDateRange } from "@/lib/format";
+import { formatDateRange, formatSeats } from "@/lib/format";
 import { Reveal } from "@/components/Reveal";
 import { CountUp } from "@/components/CountUp";
 import { FlourishTitle } from "@/components/Section";
 
-export const metadata: Metadata = { title: "Seminars" };
+export const metadata: Metadata = {
+  title: "Seminars",
+  description:
+    "A 2-day hands-on seminar in AI-enhanced finance, grants, and career skills for tribal professionals. View upcoming dates and register.",
+};
 
 const day1 = [
   {
@@ -153,7 +157,7 @@ export default async function SeminarsPage() {
                       </td>
                       <td className="px-4 py-3 text-ink-soft">{s.location}</td>
                       <td className="px-4 py-3 text-teal-600">
-                        {s.seatsLeft > 0 ? `${s.seatsLeft} Left` : "Waitlist"}
+                        {formatSeats(s.seatsLeft)}
                       </td>
                       <td className="px-4 py-3 text-right">
                         <Link

@@ -55,6 +55,9 @@ export function Field({
         required={required}
         autoComplete={autoComplete}
         placeholder={placeholder}
+        {...(type === "email"
+          ? { inputMode: "email" as const, autoCapitalize: "none", autoCorrect: "off", spellCheck: false }
+          : {})}
         className="w-full rounded-md border border-cream-300 bg-cream-50 px-4 py-2.5 text-navy-700 outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/30"
       />
     </div>

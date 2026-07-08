@@ -138,6 +138,12 @@ export default async function RegistrationsPage({
               </tbody>
             </table>
           </div>
+          {rows.length === 200 && (
+            <p className="border-t border-cream-200 px-6 py-3 text-xs text-ink-soft">
+              Showing the 200 most recent registrations. Refine with the status
+              filters above to see others.
+            </p>
+          )}
         </div>
       )}
     </div>

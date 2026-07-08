@@ -8,11 +8,13 @@ export function PasswordField({
   name,
   placeholder,
   autoComplete = "current-password",
+  minLength,
 }: {
   label: string;
   name: string;
   placeholder?: string;
   autoComplete?: string;
+  minLength?: number;
 }) {
   const [show, setShow] = useState(false);
 
@@ -27,6 +29,7 @@ export function PasswordField({
           name={name}
           type={show ? "text" : "password"}
           required
+          minLength={minLength}
           autoComplete={autoComplete}
           placeholder={placeholder}
           className="w-full rounded-md border border-cream-300 bg-cream-50 px-4 py-2.5 pr-11 text-navy-700 outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/30"

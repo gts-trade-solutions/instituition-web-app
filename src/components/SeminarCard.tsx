@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { SeminarDTO } from "@/lib/seminars";
-import { formatDateRange } from "@/lib/format";
+import { formatDateRange, formatSeats } from "@/lib/format";
 
 export function SeminarCard({ seminar }: { seminar: SeminarDTO }) {
   const full = seminar.seatsLeft <= 0;
@@ -10,7 +10,7 @@ export function SeminarCard({ seminar }: { seminar: SeminarDTO }) {
         {formatDateRange(seminar.startDate, seminar.endDate)}
       </p>
       <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-teal-600">
-        {full ? "Waitlist" : `${seminar.seatsLeft} seats left`}
+        {formatSeats(seminar.seatsLeft)}
       </p>
       <Link
         href={full ? "/contact" : `/register?seminar=${encodeURIComponent(seminar.id)}`}

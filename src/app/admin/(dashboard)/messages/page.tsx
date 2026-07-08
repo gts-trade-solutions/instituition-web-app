@@ -123,6 +123,11 @@ export default async function MessagesPage({
               </div>
             </div>
           ))}
+          {rows.length === 200 && (
+            <p className="text-center text-xs text-ink-soft">
+              Showing the 200 most recent messages.
+            </p>
+          )}
         </div>
       )}
     </div>

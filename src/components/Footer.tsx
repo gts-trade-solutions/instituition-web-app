@@ -14,6 +14,13 @@ const quickLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+// TODO(client): replace "#" with the institute's real social profile URLs.
+const socials = [
+  { Icon: Facebook, label: "Facebook", href: "#" },
+  { Icon: Linkedin, label: "LinkedIn", href: "#" },
+  { Icon: Youtube, label: "YouTube", href: "#" },
+];
+
 export async function Footer() {
   const site = await getSiteContent();
   return (
@@ -26,12 +33,14 @@ export async function Footer() {
               {site.footerTagline}
             </p>
             <div className="mt-6 flex gap-3">
-              {[Facebook, Linkedin, Youtube].map((Icon, i) => (
+              {socials.map(({ Icon, label, href }) => (
                 <a
-                  key={i}
-                  href="#"
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="grid h-9 w-9 place-items-center rounded-full bg-ocean-500 text-white transition-colors hover:bg-ocean-600"
-                  aria-label="Social link"
+                  aria-label={`AI Institute on ${label}`}
                 >
                   <Icon className="h-4 w-4" />
                 </a>
@@ -64,7 +73,10 @@ export async function Footer() {
             <ul className="mt-5 space-y-3.5 text-sm text-white">
               <li className="flex items-center gap-3">
                 <Phone className="h-4 w-4 shrink-0 text-gold-400" />
-                <a href={`tel:${site.phone}`} className="hover:text-gold-400">
+                <a
+                  href={`tel:${site.phone.replace(/[^\d+]/g, "")}`}
+                  className="hover:text-gold-400"
+                >
                   {site.phone}
                 </a>
               </li>
@@ -93,8 +105,14 @@ export async function Footer() {
               Sign up for updates on upcoming seminars and resources.
             </p>
             <form className="mt-4 space-y-3">
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email address for seminar updates
+              </label>
               <input
+                id="newsletter-email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 placeholder="Enter your email"
                 className="w-full rounded-md border border-white/15 bg-white px-4 py-2.5 text-sm text-navy-700 outline-none focus:ring-2 focus:ring-gold-400"
               />
@@ -107,10 +125,21 @@ export async function Footer() {
 
         <div className="border-t border-white/10">
           <div className="container-page flex flex-col items-center justify-between gap-3 py-5 text-xs text-cream-200/60 sm:flex-row">
-            <p>© 2026 {site.name}. All rights reserved.</p>
-            <div className="flex gap-6">
+            <p>© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
               <Link href="/privacy" className="hover:text-cream-50">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-cream-50">Terms of Use</Link>
+              <span className="text-cream-200/50">
+                Designed &amp; developed by{" "}
+                <a
+                  href="https://raceinnovations.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-gold-400 transition-colors hover:text-gold-300"
+                >
+                  Race Innovations
+                </a>
+              </span>
             </div>
           </div>
         </div>

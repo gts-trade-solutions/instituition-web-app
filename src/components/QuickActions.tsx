@@ -1,33 +1,45 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 /**
  * Floating quick-action pills pinned to the right edge, shown site-wide.
- * Register → registration, Dates → seminars list, Help → contact page.
+ * Register → registration, Dates → seminars list, Help → FAQ page.
+ * The pill for the page you're currently on highlights itself.
  */
+const actions = [
+  { href: "/register", label: "Register", accent: true },
+  { href: "/seminars", label: "Dates", accent: false },
+  { href: "/faq", label: "Help", accent: false },
+];
+
 export function QuickActions() {
+  const pathname = usePathname();
+
   return (
     <nav
       aria-label="Quick actions"
       className="fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-end gap-2 pr-1 sm:flex"
     >
-      <Link
-        href="/register"
-        className="rounded-full bg-rust-500 px-5 py-3 text-sm font-bold uppercase tracking-wide text-cream-50 shadow-lg transition-colors hover:bg-rust-600"
-      >
-        Register
-      </Link>
-      <Link
-        href="/seminars"
-        className="rounded-full bg-cream-50 px-5 py-3 text-sm font-bold uppercase tracking-wide text-navy-700 shadow-lg transition-colors hover:bg-cream-100"
-      >
-        Dates
-      </Link>
-      <Link
-        href="/contact"
-        className="rounded-full bg-cream-50 px-5 py-3 text-sm font-bold uppercase tracking-wide text-navy-700 shadow-lg transition-colors hover:bg-cream-100"
-      >
-        Help
-      </Link>
+      {actions.map((a) => {
+        const active = pathname === a.href || pathname.startsWith(`${a.href}/`);
+        const cls = active
+          ? "bg-teal-600 text-cream-50 ring-2 ring-teal-700"
+          : a.accent
+            ? "bg-rust-500 text-cream-50 hover:bg-rust-600"
+            : "bg-cream-50 text-navy-700 hover:bg-cream-100";
+        return (
+          <Link
+            key={a.href}
+            href={a.href}
+            aria-current={active ? "page" : undefined}
+            className={`rounded-full px-5 py-3 text-sm font-bold uppercase tracking-wide shadow-lg transition-colors ${cls}`}
+          >
+            {a.label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }

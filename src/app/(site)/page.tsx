@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
-  DollarSign,
   CheckCircle2,
   Users,
   TrendingUp,
@@ -10,6 +9,7 @@ import {
   BookOpen,
   Award,
   ArrowRight,
+  Gauge,
 } from "lucide-react";
 import { getPageContent } from "@/lib/content";
 import { getUpcomingSeminars } from "@/lib/seminars";
@@ -22,7 +22,7 @@ import { WovenBorder } from "@/components/WovenBorder";
 
 const benefits = [
   {
-    icon: DollarSign,
+    icon: Gauge,
     color: "bg-teal-600",
     title: "Improve Efficiency",
     body: "Save time and reduce administrative burdens with AI tools.",

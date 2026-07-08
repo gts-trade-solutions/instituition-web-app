@@ -5,16 +5,21 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 
-const schema = z.object({
-  title: z.string().min(3, "Title is required."),
-  startDate: z.string().min(1, "Start date is required."),
-  endDate: z.string().min(1, "End date is required."),
-  location: z.string().min(1),
-  price: z.coerce.number().min(0),
-  capacity: z.coerce.number().int().min(1),
-  description: z.string().optional(),
-  published: z.union([z.literal("on"), z.null()]).optional(),
-});
+const schema = z
+  .object({
+    title: z.string().min(3, "Title is required.").max(200),
+    startDate: z.string().min(1, "Start date is required."),
+    endDate: z.string().min(1, "End date is required."),
+    location: z.string().min(1).max(200),
+    price: z.coerce.number().min(0).max(100_000, "Price looks too large."),
+    capacity: z.coerce.number().int().min(1).max(100_000),
+    description: z.string().max(5000).optional(),
+    published: z.union([z.literal("on"), z.null()]).optional(),
+  })
+  .refine((d) => new Date(d.endDate) >= new Date(d.startDate), {
+    message: "End date must be on or after the start date.",
+    path: ["endDate"],
+  });
 
 export type SeminarFormState = {
   ok?: boolean;
