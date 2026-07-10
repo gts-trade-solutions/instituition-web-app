@@ -79,9 +79,13 @@ export default async function HomePage() {
           <h1 className="sr-only">
             {c.heroTitle} {c.heroTitleAccent}. {c.heroSubtitle}
           </h1>
-          {/* Woven line overlaid on the photo's bottom edge — full width, scaled
-              proportionally with the banner like the original baked-in stripe. */}
-          <WovenBorder size="xl" className="absolute inset-x-0 bottom-0 !h-[2.6%]" />
+          {/* Woven line overlaid on the photo's bottom edge — runs from the left
+              and fades out just past the "View Seminar Details" button (~48%),
+              merging smoothly into the banner (the wooden table behind it). */}
+          <WovenBorder
+            size="xl"
+            className="absolute bottom-0 left-0 !h-[2.6%] !w-[56%] [-webkit-mask-image:linear-gradient(to_right,black_86%,transparent)] [mask-image:linear-gradient(to_right,black_86%,transparent)]"
+          />
         </div>
       </section>
 
@@ -204,14 +208,14 @@ export default async function HomePage() {
       {/* ── Causes CTA band ──────────────────────────────── */}
       <section className="relative overflow-hidden bg-[#00262c] text-cream-50">
         <Image
-          src="/images/cta-mandala.png"
+          src="/images/cta-mandala-full.png"
           alt=""
-          width={646}
-          height={592}
+          width={536}
+          height={536}
           aria-hidden
-          className="pointer-events-none absolute right-0 top-0 hidden h-full w-auto select-none object-cover object-left lg:block"
+          className="pointer-events-none absolute right-0 top-1/2 hidden h-[118%] w-auto -translate-y-1/2 select-none lg:block"
         />
-        <div className="relative grid w-full items-center gap-8 px-5 py-10 sm:px-10 xl:px-14 lg:grid-cols-[auto_1fr_auto]">
+        <div className="relative grid w-full items-center gap-8 px-5 py-10 sm:px-10 xl:px-14 lg:min-h-[22rem] lg:grid-cols-[auto_1fr_auto]">
           <Image
             src="/images/cta-feather-v2.png"
             alt="Beaded eagle feather"

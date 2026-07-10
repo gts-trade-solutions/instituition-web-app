@@ -39,10 +39,10 @@ export async function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="grid h-9 w-9 place-items-center rounded-full bg-ocean-500 text-white transition-colors hover:bg-ocean-600"
+                  className="grid h-11 w-11 place-items-center rounded-full bg-ocean-500 text-white transition-colors hover:bg-ocean-600"
                   aria-label={`AI Institute on ${label}`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-7 w-7" />
                 </a>
               ))}
             </div>
