@@ -20,7 +20,7 @@ export function QuickActions() {
   return (
     <nav
       aria-label="Quick actions"
-      className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-end gap-2.5 sm:flex"
+      className="fixed right-3 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-end gap-2.5 sm:flex"
     >
       {actions.map((a) => {
         const active = pathname === a.href || pathname.startsWith(`${a.href}/`);
