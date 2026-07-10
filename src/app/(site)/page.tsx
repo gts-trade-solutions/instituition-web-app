@@ -166,7 +166,7 @@ export default async function HomePage() {
               >
                 <div className="group flex cursor-default flex-col items-center text-center">
                   <span className={`icon-pop grid h-20 w-20 place-items-center rounded-full text-cream-50 shadow-card ${b.color}`}>
-                    <b.icon className="h-10 w-10" />
+                    <b.icon className="h-12 w-12" />
                   </span>
                   <h3 className="mt-4 font-sans text-xl font-bold text-navy-600">
                     {b.title}

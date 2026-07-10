@@ -47,7 +47,7 @@ export default async function ContactPage() {
       <section className="py-10 sm:py-12">
         <div className="container-page grid items-stretch gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           {/* Get in touch */}
-          <Reveal className="flex h-full flex-col">
+          <Reveal className="flex h-full min-w-0 flex-col">
             <div className="flex items-center gap-4">
               <span className="grid h-14 w-14 place-items-center rounded-full bg-teal-600 text-cream-50">
                 <Mail className="h-7 w-7" />
@@ -65,11 +65,11 @@ export default async function ContactPage() {
                     <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-teal-600 text-cream-50">
                       <m.icon className="h-7 w-7" />
                     </span>
-                    <div>
+                    <div className="min-w-0">
                       <p className="font-display text-base font-bold uppercase tracking-wide text-navy-600">
                         {m.label}
                       </p>
-                      <p className="whitespace-pre-line text-lg text-ink-soft">{m.value}</p>
+                      <p className="whitespace-pre-line break-words text-lg text-ink-soft">{m.value}</p>
                     </div>
                   </div>
                 );
@@ -85,7 +85,7 @@ export default async function ContactPage() {
           </Reveal>
 
           {/* Form */}
-          <Reveal delay={0.1}>
+          <Reveal delay={0.1} className="min-w-0">
             <div className="flex items-center gap-4">
               <span className="grid h-14 w-14 place-items-center rounded-full bg-teal-600 text-cream-50">
                 <Users className="h-7 w-7" />
