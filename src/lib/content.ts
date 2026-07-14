@@ -11,7 +11,7 @@ export const defaultContent = {
     footerTagline:
       "Empowering Tribal Nations through education, innovation, and practical skills for a stronger tomorrow.",
     phone: "(555) 123-4567",
-    email: "info@AIInstituteForNativeAmericans.com",
+    email: "info@aiinstitutefornativeamericans.com",
     address: "123 Unity Way, Suite 100",
     cityStateZip: "Native City, ST 12345",
   },
