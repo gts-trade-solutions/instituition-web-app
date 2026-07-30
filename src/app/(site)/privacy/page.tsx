@@ -6,7 +6,7 @@ import { LegalBody, LegalSection } from "@/components/LegalBody";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How the AI Institute for Native Americans collects, uses, and protects your personal information.",
+    "How the Accounting Institute for Native Americans collects, uses, and protects your personal information.",
 };
 
 export default async function PrivacyPage() {

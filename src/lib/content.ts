@@ -6,7 +6,7 @@ import { prisma } from "./prisma";
  */
 export const defaultContent = {
   site: {
-    name: "AI Institute for Native Americans",
+    name: "Accounting Institute for Native Americans",
     tagline: "Building Stronger Nations Through AI, Financial Skills & Career Success",
     footerTagline:
       "Empowering Tribal Nations through education, innovation, and practical skills for a stronger tomorrow.",
@@ -30,7 +30,7 @@ export const defaultContent = {
     subtitle: "Empowering Tribal Nations Through Knowledge, Financial Strength, and Innovation",
     missionTitle: "Our Mission",
     missionBody1:
-      "The AI Institute for Native Americans delivers practical, hands-on training that equips tribal professionals and community members with the skills to improve financial management, strengthen operations, and build long-term economic stability.",
+      "The Accounting Institute for Native Americans delivers practical, hands-on training that equips tribal professionals and community members with the skills to improve financial management, strengthen operations, and build long-term economic stability.",
     missionBody2:
       "We focus on real-world application—so participants leave with tools they can use immediately.",
     bannerTitle: "Strong skills build Strong Nations.",

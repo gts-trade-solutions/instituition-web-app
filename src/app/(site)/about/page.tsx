@@ -9,7 +9,7 @@ import { WovenBorder } from "@/components/WovenBorder";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Meet the AI Institute for Native Americans — our mission to equip tribal professionals and communities with AI, financial, and career skills.",
+    "Meet the Accounting Institute for Native Americans — our mission to equip tribal professionals and communities with AI, financial, and career skills.",
 };
 
 const pillars = [

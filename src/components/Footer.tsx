@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { Facebook, Linkedin, Youtube } from "./SocialIcons";
 import { WovenBorder } from "./WovenBorder";
+import { Logo } from "./Logo";
 import { getSiteContent } from "@/lib/content";
 
 const quickLinks = [
@@ -28,19 +28,9 @@ export async function Footer() {
       <div className="bg-[#001733] text-cream-100">
         <div className="grid w-full gap-10 px-5 py-10 sm:px-10 xl:px-14 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Link
-              href="/"
-              aria-label="AI Institute for Native Americans — home"
-              className="inline-block transition-transform hover:scale-[1.02]"
-            >
-              <Image
-                src="/images/logo-footer.png"
-                alt="AI Institute for Native Americans"
-                width={780}
-                height={260}
-                className="h-auto w-80 max-w-full"
-              />
-            </Link>
+            {/* The live wordmark, not a baked image — logo-footer.png still reads
+                "AI INSTITUTE" and can't carry the renamed institute. */}
+            <Logo size="sm" variant="light" />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white">
               {site.footerTagline}
             </p>
@@ -52,7 +42,7 @@ export async function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="grid h-11 w-11 place-items-center rounded-full bg-ocean-500 text-white transition-colors hover:bg-ocean-600"
-                  aria-label={`AI Institute on ${label}`}
+                  aria-label={`Accounting Institute on ${label}`}
                 >
                   <Icon className="h-7 w-7" />
                 </a>

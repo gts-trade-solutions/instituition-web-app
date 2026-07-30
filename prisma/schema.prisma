@@ -1,4 +1,4 @@
-// AI Institute for Native Americans — data model
+// Accounting Institute for Native Americans — data model
 // Docs: https://pris.ly/d/prisma-schema
 
 generator client {

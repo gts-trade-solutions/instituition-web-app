@@ -47,7 +47,7 @@ PayPal gives you **two sets** of credentials:
 ### 3.2 Get SANDBOX keys (for development)
 1. At the top, make sure the **Sandbox** tab is selected.
 2. Under **REST API apps**, click **Create App**.
-3. Give it a name (e.g. `AI Institute – Sandbox`) and click **Create App**.
+3. Give it a name (e.g. `Accounting Institute – Sandbox`) and click **Create App**.
 4. The app page shows:
    - **Client ID** — copy it.
    - **Secret** — click **Show** and copy it.

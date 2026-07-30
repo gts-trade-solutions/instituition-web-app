@@ -1,6 +1,6 @@
-# AI Institute for Native Americans
+# Accounting Institute for Native Americans
 
-A modern, elegant Next.js rebuild of the AI Institute for Native Americans site —
+A modern, elegant Next.js rebuild of the Accounting Institute for Native Americans site —
 same content and structure as the original, redesigned for a more polished look and
 a perfect mobile experience, with a full admin panel and Stripe-powered registration.
 

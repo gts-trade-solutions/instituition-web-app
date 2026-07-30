@@ -175,7 +175,7 @@ export async function submitRegistration(
         referenceId: registrationId,
         description: d.cause
           ? `Seminar registration — supporting ${d.cause}`
-          : "AI Institute — 2-Day Seminar Registration",
+          : "Accounting Institute — 2-Day Seminar Registration",
         returnUrl: `${siteUrl}/api/paypal/capture?rid=${registrationId}`,
         cancelUrl: `${siteUrl}/register?canceled=1`,
       });
@@ -204,6 +204,8 @@ export async function submitRegistration(
     fullName: d.fullName,
     amountCents,
     cause: d.cause || null,
+    registrationId,
+    track: d.role || null,
   });
   redirect(`/register/success?demo=1&rid=${registrationId}`);
 }

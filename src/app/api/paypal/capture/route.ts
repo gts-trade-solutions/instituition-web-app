@@ -64,15 +64,6 @@ export async function GET(req: Request) {
       where: { id: rid },
       data: { status: "PAID" },
     });
-    await sendRegistrationConfirmation({
-      email: reg.email,
-      fullName: reg.fullName,
-      amountCents: reg.amountCents,
-      cause: reg.cause,
-      seminarStart: reg.seminar?.startDate ?? null,
-      seminarEnd: reg.seminar?.endDate ?? null,
-      seminarLocation: reg.seminar?.location ?? null,
-    });
   } catch (err) {
     // Money was taken but we failed to record it — this needs manual
     // reconciliation, so log loudly and flag it on the confirmation page.
@@ -84,6 +75,22 @@ export async function GET(req: Request) {
       `${base}/register/success?rid=${rid}&paypal=1&reconcile=1`,
     );
   }
+
+  // Confirmation + Certificate of Registration. Sent after the PAID commit and
+  // outside its try/catch: the payment is already recorded, so an email problem
+  // must not be reported to the buyer as a reconciliation failure.
+  await sendRegistrationConfirmation({
+    email: reg.email,
+    fullName: reg.fullName,
+    amountCents: reg.amountCents,
+    cause: reg.cause,
+    seminarStart: reg.seminar?.startDate ?? null,
+    seminarEnd: reg.seminar?.endDate ?? null,
+    seminarLocation: reg.seminar?.location ?? null,
+    registrationId: reg.id,
+    track: reg.role,
+    issuedAt: reg.createdAt,
+  });
 
   return success();
 }

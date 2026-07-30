@@ -73,7 +73,7 @@ export async function createOrder(params: {
         },
       ],
       application_context: {
-        brand_name: "AI Institute for Native Americans",
+        brand_name: "Accounting Institute for Native Americans",
         user_action: "PAY_NOW",
         shipping_preference: "NO_SHIPPING",
         return_url: params.returnUrl,

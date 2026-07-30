@@ -9,7 +9,7 @@ const anton = Anton({
   variable: "--font-anton",
 });
 
-const SITE_NAME = "AI Institute for Native Americans";
+const SITE_NAME = "Accounting Institute for Native Americans";
 const SITE_DESCRIPTION =
   "2-day hands-on training that equips tribal professionals and community members with AI, financial, and career skills to build stronger Nations.";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";

@@ -32,9 +32,15 @@ export function Logo({
       href="/"
       className={`group flex items-center gap-3.5 ${wordmark.variable} ${className}`}
     >
+      {/* Deliberately taller than the wordmark block beside it (which measures
+          4 / 4.68 / 6.12rem — top line + my-2 + "For" row + the pb reserving the
+          NATIVE AMERICANS row), so the emblem reads as the anchor of the lockup
+          rather than matching the text's cap height. */}
       <span
         className={`relative grid shrink-0 place-items-center overflow-hidden rounded-full transition-transform group-hover:scale-105 ${
-          sm ? "h-[6.5rem] w-[6.5rem]" : "h-16 w-16 sm:h-20 sm:w-20 xl:h-[8.25rem] xl:w-[8.25rem]"
+          sm
+            ? "-top-1.5 h-[5.4rem] w-[5.4rem]"
+            : "-top-1 h-[5.2rem] w-[5.2rem] sm:-top-1.5 sm:h-[6.1rem] sm:w-[6.1rem] 2xl:-top-2.5 2xl:h-32 2xl:w-32"
         } ${light && !sm ? "bg-cream-50 p-0.5" : ""}`}
       >
         <Image
@@ -46,29 +52,29 @@ export function Logo({
           priority={priority}
         />
       </span>
-      {/* Width is set by the AI INSTITUTE line alone; the NATIVE AMERICANS row is
-          absolutely positioned across that width so it stays flush at both edges
-          without ever stretching the top line. */}
+      {/* Width is set by the ACCOUNTING INSTITUTE line alone; the NATIVE AMERICANS
+          row is absolutely positioned across that width so it stays flush at both
+          edges without ever stretching the top line. */}
       <span
         className={`relative block font-[family-name:var(--font-logo)] leading-none ${
-          sm ? "pb-[1.7rem]" : "pb-[0.9rem] sm:pb-[1.15rem] xl:pb-[1.9rem]"
+          sm ? "pb-[1.28rem]" : "pb-[1.17rem] sm:pb-[1.43rem] 2xl:pb-[2.07rem]"
         }`}
       >
         <span
           className={`flex gap-[0.15em] whitespace-nowrap uppercase leading-none ${
             sm
-              ? "text-[2.1rem] tracking-[0.1em]"
-              : "tracking-[0.02em] text-[1.4rem] sm:text-[1.75rem] xl:text-[3rem]"
+              ? "text-[1.3rem] tracking-[0.06em]"
+              : "tracking-[0.02em] text-[1.28rem] sm:text-[1.55rem] 2xl:text-[2.25rem]"
           } ${light ? "text-cream-50" : "text-navy-600"}`}
         >
-          <span>AI</span>
+          <span>Accounting</span>
           <span>Institute</span>
         </span>
         <span className={`flex items-center ${sm ? "my-2 gap-2" : "my-2 gap-2.5"}`}>
           <span className={`h-0.5 flex-1 rounded-full ${light ? "bg-gold-400" : "bg-rust-500"}`} />
           <span
             className={`uppercase leading-none tracking-[0.2em] ${
-              sm ? "text-[0.95rem]" : "text-[0.6rem] sm:text-[0.8rem] xl:text-[1.05rem]"
+              sm ? "text-[0.6rem]" : "text-[0.55rem] sm:text-[0.7rem] 2xl:text-[0.8rem]"
             } ${light ? "text-cream-200" : "text-navy-600"}`}
           >
             For
@@ -76,8 +82,16 @@ export function Logo({
           <span className={`h-0.5 flex-1 rounded-full ${light ? "bg-gold-400" : "bg-rust-500"}`} />
         </span>
         <span
-          className={`absolute inset-x-0 bottom-0 flex justify-between gap-[0.35em] whitespace-nowrap uppercase leading-none tracking-[0.02em] ${
-            sm ? "text-[1.58rem]" : "text-[0.9rem] sm:text-[1.15rem] xl:text-[1.9rem]"
+          /* Tracking wide enough that the two words fill the ACCOUNTING INSTITUTE
+             width themselves — justify-between would otherwise dump every bit of
+             slack into one hole between them. The footer lockup needs more of it:
+             its top line carries extra tracking, so there's more width to soak
+             up. The matching -mr trims the trailing space letter-spacing adds
+             after the final "S", keeping the right edge aligned. */
+          className={`absolute inset-x-0 bottom-0 flex justify-between gap-[0.35em] whitespace-nowrap uppercase leading-none ${
+            sm
+              ? "-mr-[0.22em] tracking-[0.22em] text-[1.2rem]"
+              : "-mr-[0.16em] tracking-[0.16em] text-[1.17rem] sm:text-[1.43rem] 2xl:text-[2.07rem]"
           } ${light ? (sm ? "text-cream-50" : "text-teal-100") : "text-teal-600"}`}
         >
           <span>Native</span>

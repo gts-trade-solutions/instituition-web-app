@@ -6,7 +6,7 @@ import { LegalBody, LegalSection } from "@/components/LegalBody";
 export const metadata: Metadata = {
   title: "Terms of Use",
   description:
-    "The terms of use governing registration for and participation in AI Institute for Native Americans seminars.",
+    "The terms of use governing registration for and participation in Accounting Institute for Native Americans seminars.",
 };
 
 export default async function TermsPage() {

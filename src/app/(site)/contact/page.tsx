@@ -10,7 +10,7 @@ import { ContactForm } from "./ContactForm";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Questions about seminars, group pricing, or partnerships? Get in touch with the AI Institute for Native Americans.",
+    "Questions about seminars, group pricing, or partnerships? Get in touch with the Accounting Institute for Native Americans.",
 };
 
 export default async function ContactPage() {

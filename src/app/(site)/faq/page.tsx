@@ -9,7 +9,7 @@ import { FlourishTitle } from "@/components/Section";
 export const metadata: Metadata = {
   title: "Help & FAQ",
   description:
-    "Answers to common questions about the AI Institute for Native Americans 2-day seminars — pricing, schedule, what is included, and more.",
+    "Answers to common questions about the Accounting Institute for Native Americans 2-day seminars — pricing, schedule, what is included, and more.",
 };
 
 const faqs = [
