@@ -102,7 +102,9 @@ export default function ProtectingWomenPage() {
             Native American Women
           </>
         }
-        image="/images/cause-women-v2.jpg"
+        // See the water page: the -v2 files are 900px card assets, too small
+        // for a full-bleed hero. This is the same photo resampled to 1800px.
+        image="/images/cause-women-hero.jpg"
         imageAlt="Native American women and a child together outdoors"
         objectPosition="50% 22%"
       >

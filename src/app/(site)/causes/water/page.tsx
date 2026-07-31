@@ -120,7 +120,10 @@ export default function ProtectingWaterPage() {
           </>
         }
         subtitle="Water is sacred. It sustains all life. It is our responsibility to protect it for generations to come."
-        image="/images/cause-water-v2.jpg"
+        // cause-water-v2.jpg is a 900px card asset; stretched across a
+        // full-bleed hero it visibly softened. This is the same photo resampled
+        // to 1800px so the browser isn't upscaling it.
+        image="/images/cause-water-hero.jpg"
         imageAlt="A clear river running through forest and mountains"
       >
         <span className="mt-7 grid h-16 w-16 place-items-center rounded-full bg-teal-800/90 text-cream-50 ring-1 ring-cream-50/30">
