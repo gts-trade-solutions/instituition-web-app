@@ -9,7 +9,6 @@ import {
   Scale,
   HeartPulse,
   GraduationCap,
-  Feather,
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { WovenBorder } from "@/components/WovenBorder";
@@ -184,9 +183,12 @@ export default function ProtectingWomenPage() {
                 women who are the backbone of our communities.
               </p>
               <div className="flex items-center gap-6 lg:border-l lg:border-cream-50/15 lg:pl-10">
-                <Feather
-                  className="hidden h-14 w-14 shrink-0 text-gold-400 sm:block"
-                  strokeWidth={1.2}
+                <Image
+                  src="/images/cause-feather.png"
+                  alt=""
+                  width={420}
+                  height={341}
+                  className="hidden h-auto w-16 shrink-0 sm:block"
                 />
                 <p className="font-display text-lg font-bold uppercase leading-snug tracking-wide text-gold-400 sm:text-xl">
                   100% of contributions go directly to programs supporting Native
@@ -266,9 +268,12 @@ export default function ProtectingWomenPage() {
         <div className="container-page">
           <div className="flex flex-col items-center gap-7 rounded-lg border border-cream-300 bg-cream-100 px-8 py-8 text-center lg:flex-row lg:justify-between lg:text-left">
             <div className="flex items-center gap-5">
-              <HandHeart
-                className="hidden h-14 w-14 shrink-0 text-rust-600 sm:block"
-                strokeWidth={1.4}
+              <Image
+                src="/images/cause-hands-heart.png"
+                alt=""
+                width={320}
+                height={285}
+                className="hidden h-auto w-16 shrink-0 sm:block"
               />
               <div>
                 <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-navy-600">
@@ -282,13 +287,15 @@ export default function ProtectingWomenPage() {
                 </p>
               </div>
             </div>
-            <p className="font-display text-xl font-bold uppercase leading-snug tracking-wide text-teal-700">
-              Strong Women
-              <br />
-              Strong Nations
-              <br />
-              Strong Future
-            </p>
+            {/* Wordmark with the laurels, as artwork — the words are part of
+                the image, so they live in the alt text. */}
+            <Image
+              src="/images/cause-strong-women.png"
+              alt="Strong Women. Strong Nations. Strong Future."
+              width={760}
+              height={400}
+              className="h-auto w-64 shrink-0 xl:w-72"
+            />
           </div>
         </div>
       </section>
