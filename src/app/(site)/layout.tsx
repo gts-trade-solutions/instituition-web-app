@@ -39,7 +39,8 @@ export default async function SiteLayout({
       {hasBanner && (
         <>
           <script dangerouslySetInnerHTML={{ __html: SPLASH_NO_FLASH }} />
-          {/* Without JS the overlay could never be dismissed, so hide it. */}
+          {/* The banner is a link, so it still navigates without JS — but the
+              "already seen" flag doesn't, which would show it on every page. */}
           <noscript>
             <style>{`#portal-splash{display:none!important}`}</style>
           </noscript>
