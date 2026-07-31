@@ -154,17 +154,24 @@ export default function ProtectingWaterPage() {
         <WovenBorder />
       </section>
 
-      {/* Standfirst band */}
-      <section className="bg-navy-700 py-7">
-        <div className="container-page">
-          <div className="flex items-center justify-center gap-6">
-            <Diamond className="hidden sm:block" />
-            <p className="max-w-3xl text-center text-lg font-semibold leading-relaxed text-cream-50 sm:text-xl">
-              Clean water is essential to the health of our people, our
-              communities, our economies, and the survival of future generations.
-            </p>
-            <Diamond className="hidden sm:block" />
-          </div>
+      {/* Standfirst band — the ripple and the river emblem are part of the
+          artwork, which is why there are no separate ornaments here. */}
+      <section className="relative isolate overflow-hidden bg-navy-700">
+        <Image
+          src="/images/water-band.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="-z-10 object-cover"
+        />
+        {/* The artwork leaves its middle clear, but on narrow screens the text
+            crosses the ripple, so a light scrim keeps it legible. */}
+        <div className="absolute inset-0 -z-10 bg-navy-800/45 sm:bg-navy-800/25" />
+        <div className="container-page py-8 sm:py-10">
+          <p className="mx-auto max-w-3xl text-center text-lg font-semibold leading-relaxed text-cream-50 sm:text-xl">
+            Clean water is essential to the health of our people, our
+            communities, our economies, and the survival of future generations.
+          </p>
         </div>
       </section>
 
@@ -302,14 +309,3 @@ export default function ProtectingWaterPage() {
   );
 }
 
-/** Small woven diamond used either side of the standfirst, as in the design. */
-function Diamond({ className = "" }: { className?: string }) {
-  return (
-    <span className={`shrink-0 ${className}`} aria-hidden>
-      <svg width="46" height="26" viewBox="0 0 46 26" fill="none">
-        <path d="M23 1 L45 13 L23 25 L1 13 Z" stroke="#7FB2D9" strokeWidth="1.5" />
-        <path d="M23 7 L37 13 L23 19 L9 13 Z" fill="#7FB2D9" fillOpacity="0.35" />
-      </svg>
-    </span>
-  );
-}

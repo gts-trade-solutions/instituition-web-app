@@ -19,7 +19,18 @@ function makeVariants(variant: Variant, y: number): Variants {
   };
   return {
     hidden: hiddenMap[variant],
-    show: { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" },
+    // Only the blur variant gets a filter. Setting filter: blur(0px) on every
+    // variant left one on the element for good after the animation, and an
+    // element with a filter is composited on the GPU, which drops subpixel
+    // antialiasing — that made body text render noticeably soft everywhere
+    // Reveal is used.
+    show: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      scale: 1,
+      ...(variant === "blur" ? { filter: "blur(0px)" } : {}),
+    },
   };
 }
 
