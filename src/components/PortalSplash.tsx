@@ -66,9 +66,11 @@ export function PortalSplash() {
         // is ~270KB and already sized for the job, so there's little to gain
         // from resizing it and a visible cost to getting it late.
         unoptimized
-        // contain, not cover: the banner is dense with text, and cropping it on
-        // tall or narrow screens would cut that text off.
-        className="object-contain"
+        // cover, so the artwork reaches both edges instead of sitting in cream
+        // bars. The banner is 3:2 and most screens are wider, so this trims a
+        // little off the top and bottom rather than the sides — the decorative
+        // bands, not the copy.
+        className="object-cover"
       />
     </Link>
   );
