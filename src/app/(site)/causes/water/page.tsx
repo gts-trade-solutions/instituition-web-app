@@ -245,11 +245,11 @@ export default function ProtectingWaterPage() {
           <Reveal variant="fade">
             <div className="flex items-center gap-6 rounded-lg border border-teal-100 bg-teal-50 px-7 py-6">
               <Image
-                src="/images/cta-feather-v2.png"
+                src="/images/cause-feather-beaded.png"
                 alt=""
-                width={140}
-                height={127}
-                className="hidden h-16 w-auto shrink-0 select-none sm:block"
+                width={520}
+                height={597}
+                className="hidden h-auto w-20 shrink-0 select-none sm:block"
               />
               <div>
                 <p className="font-display text-lg font-bold uppercase tracking-wide text-teal-700 sm:text-xl">
