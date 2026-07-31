@@ -13,7 +13,6 @@ import {
   Handshake,
   Gauge,
 } from "lucide-react";
-import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { FlourishTitle } from "@/components/Section";
 import { WovenBorder } from "@/components/WovenBorder";
@@ -110,26 +109,50 @@ const CAUSE = "Protecting Our Water";
 export default function ProtectingWaterPage() {
   return (
     <>
-      <PageHero
-        topWeave
-        title={
-          <>
-            Protecting Water—
-            <br />
-            The Lifeblood Of Mother Earth
-          </>
-        }
-        subtitle="Water is sacred. It sustains all life. It is our responsibility to protect it for generations to come."
-        // Full-resolution river photo (1874x839). The cause-*-v2 files are
-        // 900px card assets and visibly softened when stretched across a
-        // full-bleed hero, so the hero keeps its own image.
-        image="/images/cause-water-hero.jpg"
-        imageAlt="A clear river running through forest and mountains"
-      >
-        <span className="mt-7 grid h-16 w-16 place-items-center rounded-full bg-teal-800/90 text-cream-50 ring-1 ring-cream-50/30">
-          <Droplet className="h-8 w-8" strokeWidth={1.5} />
-        </span>
-      </PageHero>
+      {/* Light hero: the headline sits on cream at the left and the photograph
+          bleeds off the right. White type over the photo was unreadable — the
+          river scene is bright, with no dark area to sit text on. */}
+      <section>
+        <WovenBorder />
+        <div className="relative isolate overflow-hidden bg-cream-50">
+          <div className="absolute inset-y-0 right-0 -z-10 w-full sm:w-[70%] lg:w-[64%]">
+            <Image
+              // Full-resolution river photo (1874x839). The cause-*-v2 files
+              // are 900px card assets and visibly softened when stretched.
+              src="/images/cause-water-hero.jpg"
+              alt="A clear river running through forest and mountains"
+              fill
+              priority
+              sizes="(max-width: 640px) 100vw, 66vw"
+              className="object-cover"
+            />
+            {/* Fade to cream on the left edge, and a light veil on small
+                screens where the photo sits behind the text. */}
+            <div className="absolute inset-0 bg-gradient-to-r from-cream-50 via-cream-50/70 to-transparent sm:via-cream-50/20 sm:to-transparent" />
+            <div className="absolute inset-0 bg-cream-50/55 sm:hidden" />
+          </div>
+
+          <div className="container-page py-12 sm:py-16 lg:py-20">
+            <div className="max-w-lg">
+              <h1 className="font-display text-4xl font-bold uppercase leading-[1.08] sm:text-5xl">
+                <span className="text-navy-700">Protecting Water—</span>
+                <br />
+                <span className="text-teal-600">The Lifeblood Of</span>
+                <br />
+                <span className="text-teal-600">Mother Earth</span>
+              </h1>
+              <p className="mt-5 max-w-sm leading-relaxed text-ink sm:text-lg">
+                Water is sacred. It sustains all life. It is our responsibility
+                to protect it for generations to come.
+              </p>
+              <span className="mt-7 grid h-16 w-16 place-items-center rounded-full bg-teal-700 text-cream-50">
+                <Droplet className="h-8 w-8" strokeWidth={1.5} />
+              </span>
+            </div>
+          </div>
+        </div>
+        <WovenBorder />
+      </section>
 
       {/* Standfirst band */}
       <section className="bg-navy-700 py-7">
