@@ -12,7 +12,6 @@ import {
   GraduationCap,
   Feather,
 } from "lucide-react";
-import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { WovenBorder } from "@/components/WovenBorder";
 
@@ -93,30 +92,58 @@ const CAUSE = "Protecting Native American Women";
 export default function ProtectingWomenPage() {
   return (
     <>
-      <PageHero
-        topWeave
-        title={
-          <>
-            Protecting
-            <br />
-            Native American Women
-          </>
-        }
-        // See the water page: the -v2 files are 900px card assets, too small
-        // for a full-bleed hero. This is the same photo resampled to 1800px.
-        image="/images/cause-women-hero.jpg"
-        imageAlt="Native American women and a child together outdoors"
-        objectPosition="50% 22%"
-      >
-        <p className="mt-6 font-display text-xl uppercase tracking-wide text-gold-400 sm:text-2xl">
-          Honoring Our Women. Strengthening Our Nations.
-        </p>
-        <p className="mt-4 max-w-xl leading-relaxed text-white sm:text-lg">
-          Native women are the heart of our families, the strength of our
-          communities, and the keepers of our traditions. Yet they face a crisis
-          of violence, disappearance, and injustice.
-        </p>
-      </PageHero>
+      {/* Light hero: the headline sits on cream at the left and the photograph
+          bleeds off the right, fading into the background rather than sitting
+          under a dark wash. */}
+      <section>
+        <WovenBorder />
+        <div className="relative isolate overflow-hidden bg-cream-50">
+          {/* Photo layer — right-anchored, faded out towards the text. */}
+          <div className="absolute inset-y-0 right-0 -z-10 w-full sm:w-[68%] lg:w-[62%]">
+            <Image
+              src="/images/cause-women-hero.jpg"
+              alt="A Native American woman looking out over a river valley at sunset"
+              fill
+              priority
+              sizes="(max-width: 640px) 100vw, 65vw"
+              className="object-cover"
+              style={{ objectPosition: "50% 22%" }}
+            />
+            {/* Fade to cream on the left edge, and a light veil on small
+                screens where the photo sits behind the text. */}
+            <div className="absolute inset-0 bg-gradient-to-r from-cream-50 via-cream-50/70 to-transparent sm:via-cream-50/20 sm:to-transparent" />
+            <div className="absolute inset-0 bg-cream-50/55 sm:hidden" />
+          </div>
+
+          <div className="container-page py-12 sm:py-16 lg:py-20">
+            <div className="max-w-lg">
+              <h1 className="font-display text-4xl font-bold uppercase leading-[1.05] text-[#8B1E24] sm:text-5xl lg:text-6xl">
+                Protecting
+                <br />
+                Native American
+                <br />
+                Women
+              </h1>
+
+              {/* Rule with a dot at its end, as in the design. */}
+              <span className="mt-6 flex items-center gap-2" aria-hidden>
+                <span className="h-0.5 w-40 bg-teal-600 sm:w-52" />
+                <span className="h-2 w-2 rounded-full bg-teal-600" />
+              </span>
+
+              <p className="mt-5 font-display text-lg tracking-wide text-teal-700 sm:text-xl">
+                Honoring Our Women. Strengthening Our Nations.
+              </p>
+              <p className="mt-4 max-w-md leading-relaxed text-ink sm:text-lg">
+                Native women are the heart of our families, the strength of our
+                communities, and the keepers of our traditions. Yet they face a
+                crisis of violence, disappearance, and injustice.
+              </p>
+            </div>
+          </div>
+        </div>
+        <WovenBorder />
+      </section>
 
       {/* Importance / peril / need */}
       <section className="py-10 sm:py-12">
