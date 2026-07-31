@@ -158,11 +158,20 @@ export default function ProtectingWaterPage() {
           artwork, which is why there are no separate ornaments here. */}
       <section className="relative isolate overflow-hidden bg-navy-700">
         <Image
-          src="/images/water-band.jpg"
+          src="/images/water-band-plain.jpg"
           alt=""
           fill
           sizes="100vw"
           className="-z-10 object-cover"
+        />
+        {/* Emblem placed rather than baked into the background, so it scales to
+            the band's height instead of being cropped by object-cover. */}
+        <Image
+          src="/images/water-emblem.png"
+          alt=""
+          width={290}
+          height={287}
+          className="pointer-events-none absolute -z-10 hidden h-[80%] w-auto sm:right-6 sm:top-1/2 sm:block sm:-translate-y-1/2 lg:right-12"
         />
         {/* The artwork leaves its middle clear, but on narrow screens the text
             crosses the ripple, so a light scrim keeps it legible. */}
@@ -277,18 +286,28 @@ export default function ProtectingWaterPage() {
       <section className="py-10 sm:py-12">
         <div className="container-page">
           <div className="relative isolate grid gap-8 overflow-hidden rounded-lg bg-[#002E33] px-8 py-10 text-cream-50 lg:grid-cols-2 lg:gap-12 lg:px-10">
-            {/* Ripple at the left, river emblem at the right — the artwork
-                keeps its middle clear, which is where the copy sits. */}
+            {/* Background carries the ripple only. The emblem is a separate
+                element below, because object-cover crops this band vertically
+                — the band is proportionally wider than the artwork — and that
+                was slicing the circle. Sized against the band's height, it can
+                no longer be cut. */}
             <Image
-              src="/images/water-band.jpg"
+              src="/images/water-band-plain.jpg"
               alt=""
               fill
               sizes="(max-width: 1024px) 100vw, 90vw"
               className="-z-10 object-cover"
             />
+            <Image
+              src="/images/water-emblem.png"
+              alt=""
+              width={290}
+              height={287}
+              className="pointer-events-none absolute -z-10 hidden h-[78%] w-auto lg:right-8 lg:top-1/2 lg:block lg:-translate-y-1/2"
+            />
             {/* Two columns of copy run wider than the standfirst does, so this
                 scrim is heavier than the one on that band. */}
-            <div className="absolute inset-0 -z-10 bg-[#002E33]/70 lg:bg-[#002E33]/55" />
+            <div className="absolute inset-0 -z-10 bg-[#002E33]/70 lg:bg-[#002E33]/45" />
             <div>
               <h2 className="font-display text-2xl font-bold uppercase leading-tight tracking-wide sm:text-3xl">
                 Together, We Can Protect Our Water.
