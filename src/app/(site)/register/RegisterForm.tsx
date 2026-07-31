@@ -85,6 +85,7 @@ export function RegisterForm({
   seminars,
   defaultSeminarId,
   defaultCause,
+  defaultAmount,
   defaultName,
   defaultEmail,
   paymentProvider,
@@ -92,6 +93,8 @@ export function RegisterForm({
   seminars: SeminarOption[];
   defaultSeminarId?: string;
   defaultCause?: string;
+  /** Amount carried over from a cause page's give buttons, e.g. ?amount=50. */
+  defaultAmount?: string;
   defaultName?: string;
   defaultEmail?: string;
   /** Active gateway label ("PayPal"), or null for demo mode. */
@@ -105,11 +108,14 @@ export function RegisterForm({
       ? (defaultSeminarId as string)
       : (seminars[0]?.id ?? ""),
   );
-  const [contrib, setContrib] = useState<Record<string, string>>({
-    women: "",
-    water: "",
-    sovereignty: "",
-    custom: "",
+  // Prefill from ?amount= so the figure a visitor picked on a cause page lands
+  // in that cause's box — or in the custom box when the cause has no radio.
+  const [contrib, setContrib] = useState<Record<string, string>>(() => {
+    const empty = { women: "", water: "", sovereignty: "", custom: "" };
+    const amount = (defaultAmount ?? "").replace(/[^0-9.]/g, "");
+    if (!amount || !(parseFloat(amount) > 0)) return empty;
+    const key = matchCauseKey(defaultCause);
+    return { ...empty, [key ?? "custom"]: amount };
   });
 
   // Cause the visitor arrived to support (from a "Causes & Giving" link,

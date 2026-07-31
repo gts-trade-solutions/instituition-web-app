@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import {
@@ -14,6 +13,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { WovenBorder } from "@/components/WovenBorder";
+import { GivePanel } from "./GivePanel";
 
 export const metadata: Metadata = {
   title: "Protecting Native American Women",
@@ -77,14 +77,6 @@ const impact = [
     title: "Prevention & Education",
     body: "Investing in education, awareness, and prevention programs to end violence in our communities.",
   },
-];
-
-/** Suggested contributions, added during seminar registration. */
-const gifts = [
-  { amount: "$25", body: "Provides emergency supplies for a woman in crisis." },
-  { amount: "$50", body: "Supports legal advocacy and safety planning." },
-  { amount: "$100", body: "Helps fund healing services and counseling." },
-  { amount: "$250", body: "Provides safe shelter and support for families." },
 ];
 
 const CAUSE = "Protecting Native American Women";
@@ -262,28 +254,7 @@ export default function ProtectingWomenPage() {
                   Protecting Native American Women. Every gift—large or
                   small—makes a difference.
                 </p>
-                <ul className="mt-6 space-y-3">
-                  {gifts.map((g) => (
-                    <li key={g.amount} className="flex items-center gap-4">
-                      <span className="grid w-20 shrink-0 place-items-center rounded-md bg-rust-600 py-2 font-display text-lg text-cream-50">
-                        {g.amount}
-                      </span>
-                      <span className="text-sm leading-relaxed text-ink-soft">
-                        {g.body}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href={`/register?cause=${encodeURIComponent(CAUSE)}`}
-                  className="btn-accent mt-7 w-full justify-center"
-                >
-                  Donate Now
-                </Link>
-                <p className="mt-3 text-center text-xs text-ink-soft">
-                  Contributions are added during seminar registration, where you
-                  can also enter a custom amount.
-                </p>
+                <GivePanel cause={CAUSE} />
               </div>
             </Reveal>
           </div>

@@ -15,7 +15,12 @@ export const metadata: Metadata = { title: "Register" };
 export default async function RegisterPage({
   searchParams,
 }: {
-  searchParams: Promise<{ seminar?: string; cause?: string; canceled?: string }>;
+  searchParams: Promise<{
+    seminar?: string;
+    cause?: string;
+    amount?: string;
+    canceled?: string;
+  }>;
 }) {
   // Registration requires an account — send anonymous visitors to sign up first,
   // then bring them back here once they have an account.
@@ -94,6 +99,7 @@ export default async function RegisterPage({
               seminars={options}
               defaultSeminarId={sp.seminar}
               defaultCause={sp.cause}
+              defaultAmount={sp.amount}
               defaultName={user.name}
               defaultEmail={user.email}
               paymentProvider={isPayPalEnabled ? "PayPal" : null}
