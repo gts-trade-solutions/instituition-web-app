@@ -107,7 +107,10 @@ export default function ProtectingWomenPage() {
               priority
               sizes="(max-width: 640px) 100vw, 65vw"
               className="object-cover"
-              style={{ objectPosition: "50% 22%" }}
+              // The hero band is far wider than the photo, so cover crops
+              // vertically. Bias towards her face and the sunset horizon rather
+              // than the centre, which would sit on her shoulders.
+              style={{ objectPosition: "62% 38%" }}
             />
             {/* Fade to cream on the left edge, and a light veil on small
                 screens where the photo sits behind the text. */}
