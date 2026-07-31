@@ -60,11 +60,12 @@ export function PortalSplash() {
         alt="Accounting Institute for Native Americans — Employee Resource Portal. Click anywhere to continue."
         fill
         priority
-        // Contained on a 3:2 banner: on screens wider than 3:2 the height is
-        // what constrains it, so the painted width is ~1.5x the viewport
-        // height, not the full width. Telling the browser that avoids fetching
-        // a needlessly large file on wide, short windows.
-        sizes="(min-aspect-ratio: 3/2) 150vh, 100vw"
+        // Served as-is rather than through the image optimizer. This is the
+        // very first thing a visitor sees, and the optimizer's first-request
+        // processing left the panel blank for a beat on a cold cache. The file
+        // is ~270KB and already sized for the job, so there's little to gain
+        // from resizing it and a visible cost to getting it late.
+        unoptimized
         // contain, not cover: the banner is dense with text, and cropping it on
         // tall or narrow screens would cut that text off.
         className="object-contain"
