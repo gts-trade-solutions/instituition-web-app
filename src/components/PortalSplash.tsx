@@ -55,6 +55,19 @@ export function PortalSplash() {
       aria-label="Enter the portal — go to the home page"
       className="fixed inset-0 z-[100] block cursor-pointer bg-cream-100"
     >
+      {/* Two copies of the same picture. The banner is 3:2 and browser windows
+          are wider than that, so it can either be cropped or sit in bars —
+          there is no object-fit that avoids both. This blurred, over-scaled
+          copy fills the edges so nothing looks empty, while the sharp copy
+          above it stays fully contained and loses none of the artwork. */}
+      <Image
+        src={BANNER_SRC}
+        alt=""
+        aria-hidden
+        fill
+        unoptimized
+        className="scale-110 object-cover blur-2xl"
+      />
       <Image
         src={BANNER_SRC}
         alt="Accounting Institute for Native Americans — Employee Resource Portal. Click anywhere to continue."
@@ -66,11 +79,9 @@ export function PortalSplash() {
         // is ~270KB and already sized for the job, so there's little to gain
         // from resizing it and a visible cost to getting it late.
         unoptimized
-        // cover, so the artwork reaches both edges instead of sitting in cream
-        // bars. The banner is 3:2 and most screens are wider, so this trims a
-        // little off the top and bottom rather than the sides — the decorative
-        // bands, not the copy.
-        className="object-cover"
+        // contain: every part of the banner stays on screen, including the top
+        // line and the ENTER THE PORTAL band at the bottom.
+        className="object-contain"
       />
     </Link>
   );
