@@ -1,0 +1,289 @@
+import Link from "next/link";
+import Image from "next/image";
+import type { Metadata } from "next";
+import {
+  Droplet,
+  AlertTriangle,
+  Users,
+  Check,
+  X,
+  Sprout,
+  Scale,
+  BookOpen,
+  Handshake,
+  Gauge,
+} from "lucide-react";
+import { PageHero } from "@/components/PageHero";
+import { Reveal } from "@/components/Reveal";
+import { FlourishTitle } from "@/components/Section";
+import { WovenBorder } from "@/components/WovenBorder";
+
+export const metadata: Metadata = {
+  title: "Protecting Water",
+  description:
+    "Water is sacred and sustains all life. Learn why protecting rivers, lakes, and aquifers matters for Tribal Nations — and how your contribution helps.",
+};
+
+const pillars = [
+  {
+    icon: Droplet,
+    title: "The Importance",
+    tone: "text-teal-600",
+    bg: "bg-teal-600",
+    lead: "Water is life. It is at the heart of our culture, spirituality, and way of life.",
+    marker: "check" as const,
+    points: [
+      "Sustains our communities and traditions",
+      "Supports our health and well-being",
+      "Essential for food, agriculture, and economic development",
+      "Protects the lands, fish, wildlife, and sacred places",
+      "A gift from the Creator that must be respected and safeguarded",
+    ],
+  },
+  {
+    icon: AlertTriangle,
+    title: "The Current Peril",
+    tone: "text-rust-600",
+    bg: "bg-rust-600",
+    lead: "Our waters face serious threats that endanger our future.",
+    marker: "cross" as const,
+    points: [
+      "Industrial pollution and toxic runoff",
+      "Oil spills, mining, and hazardous waste",
+      "Overuse and diversion of water from our rivers and aquifers",
+      "Climate change causing droughts, floods, and degraded water quality",
+      "Lack of enforcement of environmental protections on and near Tribal lands",
+    ],
+  },
+  {
+    icon: Users,
+    title: "The Need For Help",
+    tone: "text-ocean-500",
+    bg: "bg-ocean-500",
+    lead: "We must act now to protect our water and secure a healthy tomorrow.",
+    marker: "check" as const,
+    points: [
+      "Support clean water monitoring and restoration projects",
+      "Strengthen Tribal water rights and sovereignty",
+      "Educate and empower communities about water protection",
+      "Advocate for strong environmental policies and enforcement",
+      "Invest in sustainable solutions that protect water for future generations",
+    ],
+  },
+];
+
+const support = [
+  {
+    icon: Gauge,
+    bg: "bg-teal-700",
+    title: "Clean Water Monitoring",
+    body: "Testing and monitoring rivers, lakes, and groundwater.",
+  },
+  {
+    icon: Sprout,
+    bg: "bg-teal-500",
+    title: "Restoration Projects",
+    body: "Restoring habitats and removing pollution from waterways.",
+  },
+  {
+    icon: Scale,
+    bg: "bg-rust-500",
+    title: "Water Rights Advocacy",
+    body: "Defending Tribal water rights and protecting our sovereignty.",
+  },
+  {
+    icon: BookOpen,
+    bg: "bg-ocean-500",
+    title: "Education & Awareness",
+    body: "Teaching future generations the value of water and how to protect it.",
+  },
+  {
+    icon: Handshake,
+    bg: "bg-teal-600",
+    title: "Community Partnerships",
+    body: "Working together to build strong, sustainable solutions.",
+  },
+];
+
+const CAUSE = "Protecting Our Water";
+
+export default function ProtectingWaterPage() {
+  return (
+    <>
+      <PageHero
+        topWeave
+        title={
+          <>
+            Protecting Water—
+            <br />
+            The Lifeblood Of Mother Earth
+          </>
+        }
+        subtitle="Water is sacred. It sustains all life. It is our responsibility to protect it for generations to come."
+        image="/images/cause-water-v2.jpg"
+        imageAlt="A clear river running through forest and mountains"
+      >
+        <span className="mt-7 grid h-16 w-16 place-items-center rounded-full bg-teal-800/90 text-cream-50 ring-1 ring-cream-50/30">
+          <Droplet className="h-8 w-8" strokeWidth={1.5} />
+        </span>
+      </PageHero>
+
+      {/* Standfirst band */}
+      <section className="bg-navy-700 py-7">
+        <div className="container-page">
+          <div className="flex items-center justify-center gap-6">
+            <Diamond className="hidden sm:block" />
+            <p className="max-w-3xl text-center text-lg font-semibold leading-relaxed text-cream-50 sm:text-xl">
+              Clean water is essential to the health of our people, our
+              communities, our economies, and the survival of future generations.
+            </p>
+            <Diamond className="hidden sm:block" />
+          </div>
+        </div>
+      </section>
+
+      {/* Importance / peril / need */}
+      <section className="py-10 sm:py-12">
+        <div className="container-page">
+          <div className="grid gap-8 lg:grid-cols-3 lg:gap-10">
+            {pillars.map((p, i) => (
+              <Reveal key={p.title} delay={i * 0.08} variant="up">
+                <div className="h-full lg:border-l lg:border-cream-300 lg:pl-10 lg:first:border-l-0 lg:first:pl-0">
+                  <div className="flex items-center gap-4">
+                    <span
+                      className={`icon-pop grid h-14 w-14 shrink-0 place-items-center rounded-full text-cream-50 ${p.bg}`}
+                    >
+                      <p.icon className="h-7 w-7" />
+                    </span>
+                    <h2
+                      className={`font-display text-xl font-bold uppercase tracking-wide ${p.tone} sm:text-2xl`}
+                    >
+                      {p.title}
+                    </h2>
+                  </div>
+                  <p className="mt-5 text-ink-soft">{p.lead}</p>
+                  <ul className="mt-5 space-y-3">
+                    {p.points.map((point) => (
+                      <li key={point} className="flex items-start gap-3 text-ink">
+                        {p.marker === "check" ? (
+                          <span className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full ${p.bg} text-cream-50`}>
+                            <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                          </span>
+                        ) : (
+                          <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-rust-600 text-cream-50">
+                            <X className="h-3.5 w-3.5" strokeWidth={3} />
+                          </span>
+                        )}
+                        <span className="text-sm leading-relaxed sm:text-base">
+                          {point}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How support helps */}
+      <section className="py-10 sm:py-12">
+        <div className="container-page">
+          <FlourishTitle>How Your Support Helps</FlourishTitle>
+          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
+            {support.map((s, i) => (
+              <Reveal key={s.title} delay={i * 0.06} variant="up">
+                <div className="h-full text-center lg:border-l lg:border-cream-300 lg:px-5 lg:first:border-l-0">
+                  <span
+                    className={`icon-pop mx-auto grid h-16 w-16 place-items-center rounded-full text-cream-50 ${s.bg}`}
+                  >
+                    <s.icon className="h-8 w-8" strokeWidth={1.6} />
+                  </span>
+                  <h3 className="mt-4 font-display text-base font-bold uppercase leading-tight tracking-wide text-teal-700">
+                    {s.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    {s.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 100% note */}
+      <section className="pb-4">
+        <div className="container-page">
+          <Reveal variant="fade">
+            <div className="flex items-center gap-6 rounded-lg border border-teal-100 bg-teal-50 px-7 py-6">
+              <Image
+                src="/images/cta-feather-v2.png"
+                alt=""
+                width={140}
+                height={127}
+                className="hidden h-16 w-auto shrink-0 select-none sm:block"
+              />
+              <div>
+                <p className="font-display text-lg font-bold uppercase tracking-wide text-teal-700 sm:text-xl">
+                  100% of contributions go directly to water protection
+                  initiatives.
+                </p>
+                <p className="mt-2 text-ink-soft">
+                  Your gift helps protect the lifeblood of our communities, our
+                  traditions, and our Mother Earth.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Closing call to action */}
+      <section className="py-10 sm:py-12">
+        <div className="container-page">
+          <div className="grid gap-8 overflow-hidden rounded-lg bg-[#002E33] px-8 py-10 text-cream-50 lg:grid-cols-2 lg:gap-12 lg:px-10">
+            <div>
+              <h2 className="font-display text-2xl font-bold uppercase leading-tight tracking-wide sm:text-3xl">
+                Together, We Can Protect Our Water.
+              </h2>
+              <p className="mt-4 font-display text-xl italic text-teal-100 sm:text-2xl">
+                For Today. For Tomorrow. For Our Future.
+              </p>
+            </div>
+            <div className="lg:border-l lg:border-cream-50/15 lg:pl-12">
+              <h3 className="font-display text-xl font-bold uppercase tracking-wide sm:text-2xl">
+                Make A Difference Today
+              </h3>
+              <p className="mt-3 text-cream-100/85">
+                Choose to give when you register for a seminar or make a
+                donation online.
+              </p>
+              <Link
+                href={`/register?cause=${encodeURIComponent(CAUSE)}`}
+                className="btn-accent mt-6"
+              >
+                Give Now &amp; Protect Our Water
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <WovenBorder size="lg" />
+    </>
+  );
+}
+
+/** Small woven diamond used either side of the standfirst, as in the design. */
+function Diamond({ className = "" }: { className?: string }) {
+  return (
+    <span className={`shrink-0 ${className}`} aria-hidden>
+      <svg width="46" height="26" viewBox="0 0 46 26" fill="none">
+        <path d="M23 1 L45 13 L23 25 L1 13 Z" stroke="#7FB2D9" strokeWidth="1.5" />
+        <path d="M23 7 L37 13 L23 19 L9 13 Z" fill="#7FB2D9" fillOpacity="0.35" />
+      </svg>
+    </span>
+  );
+}

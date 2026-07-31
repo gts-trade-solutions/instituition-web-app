@@ -30,6 +30,7 @@ const causes = [
     iconBg: "bg-plum-500",
     btn: "bg-plum-500 hover:bg-plum-600",
     tag: "Protecting+Native+American+Women",
+    href: "/causes/women",
   },
   {
     icon: Bird,
@@ -64,6 +65,7 @@ const causes = [
     iconBg: "bg-ocean-500",
     btn: "bg-ocean-500 hover:bg-ocean-600",
     tag: "Protecting+Our+Water",
+    href: "/causes/water",
   },
 ];
 
@@ -144,8 +146,13 @@ export default async function CausesPage() {
                       style={{ objectPosition: cause.pos ?? "50% 50%" }}
                     />
                   </div>
+                  {/* Causes with a detail page open it; the rest still go
+                      straight to registration with the cause preselected. */}
                   <Link
-                    href={`/register?cause=${encodeURIComponent(cause.tag.replace(/\+/g, " "))}`}
+                    href={
+                      cause.href ??
+                      `/register?cause=${encodeURIComponent(cause.tag.replace(/\+/g, " "))}`
+                    }
                     className={`block py-3 text-center font-display text-sm font-semibold uppercase tracking-wide text-cream-50 transition-colors ${cause.btn}`}
                   >
                     Learn More
