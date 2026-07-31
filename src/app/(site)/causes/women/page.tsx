@@ -236,14 +236,17 @@ export default function ProtectingWomenPage() {
               </div>
             </Reveal>
 
+            {/* Dreamcatcher between the two columns, with the rules either
+                side of it. Cut out against transparency so it sits on the page
+                rather than in a paler box of its own. */}
             <Reveal delay={0.1} variant="fade" className="hidden lg:block">
-              <div className="relative h-full w-px bg-cream-300">
+              <div className="flex h-full items-center border-x border-cream-300 px-8 xl:px-10">
                 <Image
-                  src="/images/about-dreamcatcher.jpg"
+                  src="/images/cause-dreamcatcher.png"
                   alt=""
-                  width={260}
-                  height={260}
-                  className="absolute left-1/2 top-1/2 h-auto w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full object-cover shadow-card xl:w-[260px]"
+                  width={600}
+                  height={900}
+                  className="h-auto w-[180px] xl:w-[210px]"
                 />
               </div>
             </Reveal>
