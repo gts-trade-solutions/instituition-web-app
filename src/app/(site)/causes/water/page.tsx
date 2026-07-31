@@ -276,7 +276,19 @@ export default function ProtectingWaterPage() {
       {/* Closing call to action */}
       <section className="py-10 sm:py-12">
         <div className="container-page">
-          <div className="grid gap-8 overflow-hidden rounded-lg bg-[#002E33] px-8 py-10 text-cream-50 lg:grid-cols-2 lg:gap-12 lg:px-10">
+          <div className="relative isolate grid gap-8 overflow-hidden rounded-lg bg-[#002E33] px-8 py-10 text-cream-50 lg:grid-cols-2 lg:gap-12 lg:px-10">
+            {/* Ripple at the left, river emblem at the right — the artwork
+                keeps its middle clear, which is where the copy sits. */}
+            <Image
+              src="/images/water-band.jpg"
+              alt=""
+              fill
+              sizes="(max-width: 1024px) 100vw, 90vw"
+              className="-z-10 object-cover"
+            />
+            {/* Two columns of copy run wider than the standfirst does, so this
+                scrim is heavier than the one on that band. */}
+            <div className="absolute inset-0 -z-10 bg-[#002E33]/70 lg:bg-[#002E33]/55" />
             <div>
               <h2 className="font-display text-2xl font-bold uppercase leading-tight tracking-wide sm:text-3xl">
                 Together, We Can Protect Our Water.
