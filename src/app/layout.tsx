@@ -46,6 +46,11 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
+      // The welcome-banner script stamps data-splash on <html> before React
+      // hydrates, so the server markup and the live DOM legitimately differ
+      // here. Without this, React logs a hydration mismatch for the mismatch
+      // it is meant to cause.
+      suppressHydrationWarning
       className={`h-full scroll-smooth antialiased ${anton.variable}`}
     >
       <body className="min-h-full">{children}</body>

@@ -56,6 +56,19 @@ html {
   scrollbar-gutter: stable;
 }
 
+/* Welcome banner (PortalSplash). The "seen" flag lives in sessionStorage, which
+   the server can't read, so visibility is decided in CSS off an attribute an
+   inline script sets before first paint — that way neither the banner nor the
+   page behind it flashes. :has() scopes the scroll lock to pages that actually
+   render the overlay, so admin routes (which don't) still scroll normally. */
+html[data-splash="seen"] #portal-splash {
+  display: none !important;
+}
+
+html:not([data-splash="seen"]) body:has(#portal-splash) {
+  overflow: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
