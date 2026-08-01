@@ -17,14 +17,31 @@ const GIFTS = [
   { amount: "250", body: "Provides safe shelter and support for families." },
 ];
 
+/**
+ * Keep the field to a plain money figure as it's typed: digits, at most one
+ * decimal point, at most two places after it. Rejecting on change rather than
+ * on submit means a letter never appears in the box at all — including pasted
+ * text, which fires change too.
+ */
+function sanitizeAmount(raw: string): string {
+  let v = raw.replace(/[^0-9.]/g, "");
+  const dot = v.indexOf(".");
+  if (dot !== -1) {
+    // Drop any further points after the first.
+    v = v.slice(0, dot + 1) + v.slice(dot + 1).replace(/\./g, "");
+    const [whole, decimals] = v.split(".");
+    v = whole + "." + decimals.slice(0, 2);
+  }
+  return v;
+}
+
 export function GivePanel({ cause }: { cause: string }) {
   const [picked, setPicked] = useState<string | null>(null);
+  // Only ever holds a sanitized value, so it can be used as-is below.
   const [custom, setCustom] = useState("");
 
-  // A typed custom amount wins over a chosen chip; strip anything that isn't a
-  // number so a stray character can't end up in the query string.
-  const clean = custom.replace(/[^0-9.]/g, "");
-  const amount = clean && parseFloat(clean) > 0 ? clean : picked;
+  // A typed custom amount wins over a chosen chip.
+  const amount = custom && parseFloat(custom) > 0 ? custom : picked;
 
   const href =
     `/register?cause=${encodeURIComponent(cause)}` +
@@ -34,7 +51,7 @@ export function GivePanel({ cause }: { cause: string }) {
     <>
       <ul className="mt-6 space-y-3">
         {GIFTS.map((g) => {
-          const active = picked === g.amount && !clean;
+          const active = picked === g.amount && !custom;
           return (
             <li key={g.amount} className="flex items-center gap-4">
               <button
@@ -67,8 +84,12 @@ export function GivePanel({ cause }: { cause: string }) {
           </span>
           <input
             value={custom}
-            onChange={(e) => setCustom(e.target.value)}
+            onChange={(e) => setCustom(sanitizeAmount(e.target.value))}
             inputMode="decimal"
+            // Deliberately a text input, not type="number": number fields still
+            // accept "e", "+" and "-", and add spinners nobody wants on a
+            // donation amount.
+            type="text"
             placeholder="Other Amount"
             aria-label="Custom contribution amount"
             className="w-full min-w-0 bg-transparent px-3 py-2.5 text-ink outline-none placeholder:text-ink-soft/60"
