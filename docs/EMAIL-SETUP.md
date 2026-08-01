@@ -28,6 +28,15 @@ different properties.
 
 ## Step 1 — publish the DKIM records
 
+**No mailbox is needed for the sending address.** Domain verification authorises
+sending by DNS, so once the domain is verified SES will send as any address on
+it — `no-reply@` included — whether or not that inbox exists. Nothing is ever
+delivered to it; that is what `SES_REPLY_TO` is for.
+
+DNS for this domain is managed by someone else. The request to send them is in
+[DNS-REQUEST.md](DNS-REQUEST.md) — it is a one-time change and needs no ongoing
+involvement from them.
+
 At GoDaddy, add three CNAME records to `aiinstitutefornativeamericans.com`.
 GoDaddy appends the domain automatically, so enter only the host part shown.
 
@@ -59,8 +68,14 @@ AWS_SES_REGION="ap-south-1"
 AWS_SES_ACCESS_KEY_ID="..."
 AWS_SES_SECRET_ACCESS_KEY="..."
 SES_FROM_EMAIL="Accounting Institute <no-reply@aiinstitutefornativeamericans.com>"
-SES_REPLY_TO="info@aiinstitutefornativeamericans.com"
+SES_REPLY_TO="info@raceautoindia.com"
 ```
+
+`SES_REPLY_TO` must be an inbox someone actually reads — it needs no SES
+verification, but replies go there and nowhere else.
+`info@aiinstitutefornativeamericans.com` does **not** exist as a mailbox, so it
+must not be used here; replies would bounce. Note the site's contact page still
+advertises that address, which means anyone writing to it today gets nothing.
 
 Note the names: the app reads **`AWS_SES_*`**. A server that only has
 `AWS_S3_*` set — even with the same key and secret — will not send. The same
