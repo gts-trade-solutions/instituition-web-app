@@ -3,14 +3,33 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Menu, X, UserRound } from "lucide-react";
+import { Menu, X, UserRound, ChevronDown } from "lucide-react";
 import { Logo } from "./Logo";
 
-const links = [
+type NavLink = {
+  href: string;
+  label: string;
+  children?: { href: string; label: string }[];
+};
+
+/**
+ * The cause pages hang off "Causes & Giving" rather than sitting alongside it.
+ * Six top-level items already fill the bar at 1280px — two more would push the
+ * sign-in and register buttons off the edge.
+ */
+const links: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
   { href: "/seminars", label: "Seminars" },
-  { href: "/causes", label: "Causes & Giving" },
+  {
+    href: "/causes",
+    label: "Causes & Giving",
+    children: [
+      { href: "/causes", label: "All Causes" },
+      { href: "/causes/water", label: "Protecting Water" },
+      { href: "/causes/women", label: "Protecting Native American Women" },
+    ],
+  },
   { href: "/why-it-matters", label: "Why It Matters" },
   { href: "/contact", label: "Contact" },
 ];
@@ -60,22 +79,51 @@ export function Navbar({ user }: { user?: { name: string } | null }) {
         <Logo className="pt-1 sm:pt-2" priority />
 
         <div className="hidden items-center gap-1 xl:flex">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={`relative whitespace-nowrap px-2.5 py-2 text-base font-semibold tracking-normal transition-colors 2xl:px-3 ${
-                isActive(l.href)
-                  ? "text-rust-500"
-                  : "text-navy-600 hover:text-rust-500"
-              }`}
-            >
-              {l.label}
-              {isActive(l.href) && (
-                <span className="absolute inset-x-3 -bottom-0.5 h-0.5 bg-rust-500" />
-              )}
-            </Link>
-          ))}
+          {links.map((l) => {
+            const item = (
+              <Link
+                href={l.href}
+                className={`relative flex items-center gap-1 whitespace-nowrap px-2.5 py-2 text-base font-semibold tracking-normal transition-colors 2xl:px-3 ${
+                  isActive(l.href)
+                    ? "text-rust-500"
+                    : "text-navy-600 hover:text-rust-500"
+                }`}
+              >
+                {l.label}
+                {l.children && <ChevronDown className="h-4 w-4" />}
+                {isActive(l.href) && (
+                  <span className="absolute inset-x-3 -bottom-0.5 h-0.5 bg-rust-500" />
+                )}
+              </Link>
+            );
+
+            if (!l.children) return <div key={l.href}>{item}</div>;
+
+            // Opens on hover and on keyboard focus. focus-within means tabbing
+            // into the submenu keeps it open without any state to manage.
+            return (
+              <div key={l.href} className="group relative">
+                {item}
+                <div className="invisible absolute left-0 top-full z-50 pt-1 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                  <div className="min-w-[15rem] rounded-md border border-cream-300 bg-cream-50 p-1.5 shadow-card">
+                    {l.children.map((c) => (
+                      <Link
+                        key={c.href}
+                        href={c.href}
+                        className={`block rounded px-3 py-2 text-sm font-semibold transition-colors ${
+                          pathname === c.href
+                            ? "bg-cream-200 text-rust-500"
+                            : "text-navy-600 hover:bg-cream-200 hover:text-rust-500"
+                        }`}
+                      >
+                        {c.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         <div className="hidden items-center gap-2 xl:flex 2xl:gap-4">
@@ -134,17 +182,39 @@ export function Navbar({ user }: { user?: { name: string } | null }) {
         >
           <div className="flex flex-col gap-1">
             {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={`rounded-md px-4 py-3 text-base font-semibold tracking-normal ${
-                  isActive(l.href)
-                    ? "bg-teal-600 text-cream-50"
-                    : "text-navy-600 hover:bg-cream-200"
-                }`}
-              >
-                {l.label}
-              </Link>
+              <div key={l.href}>
+                <Link
+                  href={l.href}
+                  className={`block rounded-md px-4 py-3 text-base font-semibold tracking-normal ${
+                    isActive(l.href)
+                      ? "bg-teal-600 text-cream-50"
+                      : "text-navy-600 hover:bg-cream-200"
+                  }`}
+                >
+                  {l.label}
+                </Link>
+                {/* Sub-pages listed inline — a drawer has the room, so there's
+                    no reason to hide them behind another tap. */}
+                {l.children && (
+                  <div className="mt-1 flex flex-col gap-1 border-l border-cream-300 pl-3 ml-4">
+                    {l.children
+                      .filter((c) => c.href !== l.href)
+                      .map((c) => (
+                        <Link
+                          key={c.href}
+                          href={c.href}
+                          className={`rounded-md px-4 py-2.5 text-sm font-semibold ${
+                            pathname === c.href
+                              ? "bg-cream-200 text-rust-500"
+                              : "text-navy-600 hover:bg-cream-200"
+                          }`}
+                        >
+                          {c.label}
+                        </Link>
+                      ))}
+                  </div>
+                )}
+              </div>
             ))}
             <Link
               href={user ? "/account" : "/login"}
