@@ -29,6 +29,24 @@ export const isEmailEnabled = Boolean(
   region && accessKeyId && secretAccessKey && fromEmail,
 );
 
+/** Which of the required vars are absent — used to explain a skipped send. */
+function missingConfig(): string[] {
+  return (
+    [
+      ["AWS_SES_REGION", region],
+      ["AWS_SES_ACCESS_KEY_ID", accessKeyId],
+      ["AWS_SES_SECRET_ACCESS_KEY", secretAccessKey],
+      ["SES_FROM_EMAIL", fromEmail],
+    ] as const
+  )
+    .filter(([, v]) => !v)
+    .map(([k]) => k);
+}
+
+// Say so once at startup. Without this a deployment with no SES vars looks
+// identical to a working one — sends just vanish, with nothing in the logs.
+let warned = false;
+
 let client: SESv2Client | null = null;
 function getClient(): SESv2Client {
   if (!client) {
@@ -65,7 +83,16 @@ export async function sendEmail(params: {
   text: string;
   attachments?: Attachment[];
 }): Promise<SendResult> {
-  if (!isEmailEnabled) return { sent: false, skipped: true };
+  if (!isEmailEnabled) {
+    if (!warned) {
+      warned = true;
+      console.warn(
+        `[ses] email is DISABLED — not sending. Missing: ${missingConfig().join(", ")}. ` +
+          `Set these in the server's environment (.env is gitignored, so it does not ship with the repo) and restart.`,
+      );
+    }
+    return { sent: false, skipped: true };
+  }
   const hasAttachments = Boolean(params.attachments?.length);
   try {
     await getClient().send(
