@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import type { ReactNode } from "react";
+import { useCallback, useRef, type ReactNode } from "react";
 
 type Variant = "up" | "down" | "left" | "right" | "fade" | "scale" | "blur";
 
@@ -50,18 +50,41 @@ export function Reveal({
   className?: string;
 }) {
   const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const settle = useSettle(ref);
   return (
     <motion.div
+      ref={ref}
       className={className}
       variants={makeVariants(variant, y)}
       initial={reduce ? "show" : "hidden"}
       whileInView="show"
       viewport={{ once: true, margin: "-70px" }}
       transition={reduce ? { duration: 0 } : { duration, delay, ease: EASE }}
+      onAnimationComplete={settle}
     >
       {children}
     </motion.div>
   );
+}
+
+/**
+ * Strip the inline transform and filter once the reveal has finished.
+ *
+ * framer-motion leaves `transform: translateY(0px)` on the element — and
+ * `filter: blur(0px)` for the blur variant. Either one promotes the element to
+ * its own composited layer, which costs subpixel antialiasing, so every glyph
+ * inside renders soft. Both are no-ops visually by the time the animation ends,
+ * and it runs `once`, so clearing them is safe.
+ */
+function useSettle(ref: React.RefObject<HTMLDivElement | null>) {
+  return useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.transform = "";
+    el.style.filter = "";
+    el.style.willChange = "auto";
+  }, [ref]);
 }
 
 /**
@@ -103,11 +126,15 @@ export function RevealItem({
   duration?: number;
   className?: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const settle = useSettle(ref);
   return (
     <motion.div
+      ref={ref}
       className={className}
       variants={makeVariants(variant, y)}
       transition={{ duration, ease: EASE }}
+      onAnimationComplete={settle}
     >
       {children}
     </motion.div>
