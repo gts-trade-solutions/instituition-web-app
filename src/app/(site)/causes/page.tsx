@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { Check, HandHeart, Feather } from "lucide-react";
+import { Check } from "lucide-react";
 import { getPageContent } from "@/lib/content";
 import { Reveal } from "@/components/Reveal";
 import { FlourishTitle } from "@/components/Section";
@@ -177,9 +177,13 @@ export default async function CausesPage() {
           <div className="grid gap-8 rounded-lg border border-cream-300 bg-cream-50 p-7 shadow-card lg:grid-cols-2 lg:gap-10 lg:p-8">
           <Reveal>
             <div className="flex gap-5">
-              <span className="grid h-20 w-20 shrink-0 place-items-center rounded-full bg-rust-500 text-cream-50">
-                <Feather className="h-10 w-10" strokeWidth={1.5} />
-              </span>
+              <Image
+                src="/images/cause-icon-contribution.png"
+                alt=""
+                width={256}
+                height={276}
+                className="h-20 w-20 shrink-0 object-contain"
+              />
               <div>
                 <h3 className="font-display text-2xl font-bold uppercase tracking-wide text-rust-500 sm:text-3xl">
                   Your Contribution Matters
@@ -198,9 +202,13 @@ export default async function CausesPage() {
 
           <Reveal delay={0.1} className="lg:border-l lg:border-cream-300 lg:pl-12">
             <div className="flex gap-5">
-              <span className="grid h-20 w-20 shrink-0 place-items-center rounded-full bg-teal-600 text-cream-50">
-                <HandHeart className="h-10 w-10" />
-              </span>
+              <Image
+                src="/images/cause-icon-together.png"
+                alt=""
+                width={256}
+                height={257}
+                className="h-20 w-20 shrink-0 object-contain"
+              />
               <div>
                 <h3 className="font-display text-2xl font-bold uppercase tracking-wide text-teal-600 sm:text-3xl">
                   Together, We Can:
@@ -225,11 +233,11 @@ export default async function CausesPage() {
           <div className="flex flex-col items-center gap-6 overflow-hidden rounded-lg bg-[#002E33] px-8 py-10 text-cream-50 lg:flex-row lg:justify-between">
             <div className="flex items-center gap-5 text-center lg:text-left">
               <Image
-                src="/images/cta-feather-v2.png"
+                src="/images/cta-feather-plain.png"
                 alt=""
-                width={140}
-                height={127}
-                className="animate-float hidden h-20 w-auto shrink-0 select-none sm:block"
+                width={420}
+                height={463}
+                className="animate-float hidden h-24 w-auto shrink-0 select-none sm:block"
               />
               <div>
                 <h2 className="font-display text-2xl font-bold uppercase tracking-wide sm:text-3xl">
