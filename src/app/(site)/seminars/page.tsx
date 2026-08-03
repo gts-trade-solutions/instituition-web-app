@@ -176,8 +176,10 @@ export default async function SeminarsPage() {
               ))}
             </ul>
 
-            {/* Tablet and up: full table. */}
-            <div className="mt-5 hidden overflow-x-auto rounded-lg border border-cream-300 bg-cream-50 shadow-card sm:flex sm:flex-col">
+            {/* Tablet and up: full table. It stretches to take the leftover
+                height, so this column ends level with the information column
+                beside it instead of leaving a gap under the table. */}
+            <div className="mt-5 hidden overflow-x-auto rounded-lg border border-cream-300 bg-cream-50 shadow-card sm:flex sm:flex-1 sm:flex-col">
               <table className="w-full min-w-[560px] text-base">
                 <thead>
                   <tr className="bg-teal-700 text-left font-display text-sm uppercase tracking-wide text-cream-50">
