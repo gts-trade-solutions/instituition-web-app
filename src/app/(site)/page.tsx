@@ -206,7 +206,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── Causes CTA band ──────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#00232a] text-cream-50">
+      <section className="relative overflow-hidden bg-[#00262a] text-cream-50">
         {/* Small mandala flower accent, faded into the bottom-right corner. */}
         <Image
           src="/images/cta-mandala-corner.jpg"

@@ -25,7 +25,7 @@ export async function Footer() {
   const site = await getSiteContent();
   return (
     <footer className="sticky bottom-0 z-0">
-      <div className="bg-[#001733] text-cream-100">
+      <div className="bg-[#001732] text-cream-100">
         <div className="grid w-full gap-10 px-5 py-10 sm:px-10 xl:px-14 md:grid-cols-2 lg:grid-cols-4">
           <div>
             {/* The live wordmark, not a baked image — logo-footer.png still reads
