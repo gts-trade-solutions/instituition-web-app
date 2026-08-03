@@ -131,17 +131,6 @@ export async function Footer() {
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
               <Link href="/privacy" className="hover:text-cream-50">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-cream-50">Terms of Use</Link>
-              <span className="text-cream-200/50">
-                Designed &amp; developed by{" "}
-                <a
-                  href="https://raceinnovations.in/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-gold-400 transition-colors hover:text-gold-300"
-                >
-                  Race Innovations
-                </a>
-              </span>
             </div>
           </div>
         </div>
