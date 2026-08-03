@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { UserRound, Bird, Droplet, Check, HandHeart, Feather } from "lucide-react";
+import { Check, HandHeart, Feather } from "lucide-react";
 import { getPageContent } from "@/lib/content";
 import { Reveal } from "@/components/Reveal";
 import { FlourishTitle } from "@/components/Section";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 const causes = [
   {
-    icon: UserRound,
+    icon: "/images/cause-icon-women.png",
     title: "Protecting Native American Women",
     body: "Supporting programs that promote safety, wellness, and empowerment for Native women and families.",
     points: [
@@ -33,7 +33,7 @@ const causes = [
     href: "/causes/women",
   },
   {
-    icon: Bird,
+    icon: "/images/cause-icon-sovereignty.png",
     title: "Supporting Native American Sovereignty",
     body: "Strengthening Tribal self-determination, governance, and economic independence so our Nations can thrive.",
     points: [
@@ -50,7 +50,7 @@ const causes = [
     tag: "Supporting+Native+American+Sovereignty",
   },
   {
-    icon: Droplet,
+    icon: "/images/cause-icon-water.png",
     title: "Protecting Our Water — The Lifeblood of Mother Earth",
     body: "Safeguarding clean water for our people, our lands, and future generations.",
     points: [
@@ -116,9 +116,16 @@ export default async function CausesPage() {
                 <div className="group flex h-full flex-col overflow-hidden rounded-lg border border-cream-300 bg-cream-50 shadow-card transition-shadow duration-300 hover:shadow-soft">
                   <div className="flex flex-1 flex-col p-6">
                     <div className="flex items-start gap-4">
-                      <span className={`icon-pop grid h-14 w-14 shrink-0 place-items-center rounded-full text-cream-50 ${cause.iconBg}`}>
-                        <cause.icon className="h-7 w-7" />
-                      </span>
+                      {/* Supplied artwork rather than an icon font — each badge
+                          carries its own colour, so no background is needed
+                          behind it. */}
+                      <Image
+                        src={cause.icon}
+                        alt=""
+                        width={256}
+                        height={256}
+                        className="icon-pop h-14 w-14 shrink-0"
+                      />
                       <div>
                         <h3 className={`font-display text-lg font-bold uppercase leading-tight tracking-wide ${cause.color}`}>
                           {cause.title}
