@@ -6,8 +6,9 @@ import Link from "next/link";
 import { BANNER_SRC, SPLASH_STORAGE_KEY } from "@/lib/splash";
 
 /**
- * Full-screen welcome banner shown once per browsing session. Only the "Enter
- * the Portal" button leaves it — clicking the artwork does nothing.
+ * Full-screen welcome banner shown once per browsing session. The artwork
+ * itself is not clickable — visitors leave it by one of the three buttons in
+ * the bar along the bottom.
  *
  * The "already seen" flag lives in sessionStorage, which the server can't read,
  * so a naive render would either flash the site before the banner appears or
@@ -17,18 +18,6 @@ import { BANNER_SRC, SPLASH_STORAGE_KEY } from "@/lib/splash";
  * present. So the markup always renders on the server, and CSS — not React —
  * decides whether it is ever painted.
  */
-
-/** Artwork dimensions, so the frame can match its aspect exactly. */
-const ART_W = 2132;
-const ART_H = 941;
-
-/**
- * Where the "Enter the Portal" button sits inside the artwork, measured off the
- * image itself. The frame below is locked to the artwork's aspect ratio, so
- * these percentages land on the button at every screen size.
- */
-const HOTSPOT = { left: "41.3%", top: "87.3%", width: "17.1%", height: "4.6%" };
-
 export function PortalSplash() {
   const ref = useRef<HTMLAnchorElement>(null);
 
@@ -40,70 +29,76 @@ export function PortalSplash() {
     ref.current?.focus();
   }, []);
 
-  function enter(e: React.MouseEvent<HTMLAnchorElement>) {
-    // Let modified clicks (new tab/window, middle-click) behave normally.
-    if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
-      return;
-    }
-    e.preventDefault();
+  /**
+   * Mark the banner seen, then let the browser follow the link normally. A full
+   * navigation rather than a client-side transition: it works identically from
+   * any page and can't leave the overlay stranded. Writing the flag first means
+   * the pre-paint script hides the banner on arrival.
+   */
+  function markSeen() {
     try {
       sessionStorage.setItem(SPLASH_STORAGE_KEY, "1");
     } catch {
       // Private mode / storage disabled — the banner just shows again later.
     }
-    // A full navigation rather than a client-side transition: it works
-    // identically from any page and can't leave the overlay stranded when the
-    // visitor is already on "/". The flag above is written first, so the
-    // pre-paint script hides the banner on arrival.
-    window.location.assign("/");
+    document.documentElement.setAttribute("data-splash", "seen");
   }
 
   return (
-    <div
-      id="portal-splash"
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-5 overflow-y-auto bg-cream-100 p-4"
-    >
-      {/* Frame locked to the artwork's aspect and sized to fit the viewport, so
-          the whole poster is always visible. Cover-cropping it left phones
-          showing a narrow slice of the middle. */}
-      <div
-        className="relative w-[min(100%,calc((100svh-8rem)*2.2657))] shrink-0"
-        style={{ aspectRatio: `${ART_W} / ${ART_H}` }}
-      >
-        <Image
-          src={BANNER_SRC}
-          alt="Accounting Institute for Native Americans — Employee Resource Portal"
-          fill
-          priority
-          // Served as-is rather than through the image optimizer: this is the
-          // first thing painted, and the optimizer's first-request processing
-          // left the panel blank for a beat on a cold cache.
-          unoptimized
-          className="object-contain"
-        />
+    <div id="portal-splash" className="fixed inset-0 z-[100] bg-cream-100">
+      {/* Fills the screen on anything wider than a phone. On a portrait phone
+          filling would crop a 2.27:1 poster down to a slice of its middle, so
+          there it is fitted whole instead. */}
+      <Image
+        src={BANNER_SRC}
+        alt="Accounting Institute for Native Americans — Employee Resource Portal"
+        fill
+        priority
+        // Served as-is rather than through the image optimizer: this is the
+        // first thing painted, and the optimizer's first-request processing
+        // left the panel blank for a beat on a cold cache.
+        unoptimized
+        className="object-contain sm:object-cover"
+      />
 
-        {/* Sits exactly over the button drawn into the artwork. Hidden on small
-            screens, where the poster shrinks until that button is far too small
-            to tap — the real button below serves there instead. */}
-        <Link
-          ref={ref}
-          href="/"
-          onClick={enter}
-          aria-label="Enter the portal"
-          className="absolute hidden rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rust-500 sm:block"
-          style={HOTSPOT}
-        />
+      {/* Action bar. Drawn by us rather than relying on the button inside the
+          artwork: that one moves and crops with the image, and there is nowhere
+          in it for Login and Sign Up. Sitting at the bottom edge, it covers the
+          artwork's own button band so the two don't compete. */}
+      <div className="absolute inset-x-0 bottom-0 bg-teal-800/95 px-4 py-4 backdrop-blur-sm sm:py-5">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+          <Link
+            href="/login"
+            onClick={markSeen}
+            className="btn-outline-light min-w-[7rem] justify-center px-6 py-2.5"
+          >
+            Login
+          </Link>
+
+          {/* On a phone all three won't fit on one line, so this takes its own
+              full-width row and Login/Sign Up share the one below it. */}
+          <Link
+            ref={ref}
+            href="/"
+            onClick={markSeen}
+            className="btn-accent order-first w-full justify-center px-8 py-3 text-base sm:order-none sm:w-auto sm:text-lg"
+          >
+            Enter the Portal
+          </Link>
+
+          <Link
+            href="/signup"
+            onClick={markSeen}
+            className="btn-outline-light min-w-[7rem] justify-center px-6 py-2.5"
+          >
+            Sign Up
+          </Link>
+        </div>
+
+        <p className="mt-3 text-center text-sm italic text-cream-200">
+          Choose an option above to continue
+        </p>
       </div>
-
-      {/* On phones the poster is too small for its drawn button to be a usable
-          target, so the same action gets a real one. */}
-      <Link
-        href="/"
-        onClick={enter}
-        className="btn-accent shrink-0 px-8 py-3 text-base sm:hidden"
-      >
-        Enter the Portal
-      </Link>
     </div>
   );
 }
