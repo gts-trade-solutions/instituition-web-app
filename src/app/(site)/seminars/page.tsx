@@ -76,32 +76,36 @@ export default async function SeminarsPage() {
       {/* Hero — split: text on cream (left), classroom photo (right) */}
       <section className="relative overflow-hidden bg-[#FBF3EA]">
         {/* Desktop: photo bleeds to the right edge, fading into the cream */}
-        <div className="absolute inset-y-0 right-0 hidden w-[60%] lg:block">
+        <div className="absolute inset-y-0 right-0 hidden w-[64%] lg:block">
           <Image
             src="/images/seminars-hero.jpg"
             alt="Tribal professionals learning with laptops"
             fill
             priority
-            sizes="60vw"
+            sizes="64vw"
             className="object-cover object-top"
           />
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to right, #FBF3EA 0%, rgba(251,243,234,0.35) 14%, rgba(251,243,234,0) 34%)",
+                "linear-gradient(to right, #FBF3EA 0%, rgba(251,243,234,0.55) 12%, rgba(251,243,234,0) 40%)",
             }}
           />
         </div>
-        <div className="container-page relative py-10 lg:py-12">
-          <div className="max-w-xl">
-            <h1 className="font-display text-5xl font-bold uppercase leading-[1.02] text-navy-600 sm:text-6xl">
+        <div className="container-page relative py-12 lg:py-16">
+          {/* Wide enough to keep the strapline on one line and the intro to
+              five, as the design sets them. */}
+          <div className="max-w-xl xl:max-w-[46rem]">
+            <h1 className="font-display font-bold uppercase leading-[0.98] text-navy-600 text-5xl sm:text-6xl lg:text-7xl xl:text-[6.5rem]">
               {c.title}
             </h1>
-            <p className="mt-3 font-display text-xl font-bold uppercase tracking-wide text-teal-600 sm:text-2xl">
+            <p className="mt-4 font-display font-bold uppercase tracking-wide text-teal-600 text-xl sm:text-2xl xl:text-[2.35rem]">
               {c.subtitle}
             </p>
-            <p className="mt-5 max-w-md text-lg leading-relaxed text-ink-soft">
+            {/* 38.5rem reproduces the design's line breaks exactly — the intro
+                falls to five lines, breaking after "practical". */}
+            <p className="mt-6 max-w-[34rem] leading-[1.85] text-ink text-lg xl:max-w-[38.5rem] xl:text-[1.4rem]">
               {c.intro}
             </p>
           </div>
