@@ -84,7 +84,7 @@ export async function Footer() {
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
-                <span className="break-all">
+                <span className="whitespace-nowrap text-xs sm:text-sm lg:text-xs xl:text-sm">
                   accountinginstituefornativeamericans.com
                 </span>
               </li>

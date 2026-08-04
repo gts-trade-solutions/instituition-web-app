@@ -48,6 +48,7 @@ const causes = [
     iconBg: "bg-teal-600",
     btn: "bg-teal-700 hover:bg-teal-800",
     tag: "Supporting+Native+American+Sovereignty",
+    href: "/why-it-matters",
   },
   {
     icon: "/images/cause-icon-water.png",
