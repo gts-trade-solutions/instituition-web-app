@@ -1,16 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import {
-  Droplet,
-  Check,
-  X,
-  Sprout,
-  Scale,
-  BookOpen,
-  Handshake,
-  Gauge,
-} from "lucide-react";
+import { Droplet, Check, X } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { FlourishTitle } from "@/components/Section";
 import { WovenBorder } from "@/components/WovenBorder";
@@ -71,32 +62,27 @@ const pillars = [
 
 const support = [
   {
-    icon: Gauge,
-    bg: "bg-teal-700",
+    icon: "/images/support-monitoring.png",
     title: "Clean Water Monitoring",
     body: "Testing and monitoring rivers, lakes, and groundwater.",
   },
   {
-    icon: Sprout,
-    bg: "bg-teal-500",
+    icon: "/images/support-restoration.png",
     title: "Restoration Projects",
     body: "Restoring habitats and removing pollution from waterways.",
   },
   {
-    icon: Scale,
-    bg: "bg-rust-500",
+    icon: "/images/support-rights.png",
     title: "Water Rights Advocacy",
     body: "Defending Tribal water rights and protecting our sovereignty.",
   },
   {
-    icon: BookOpen,
-    bg: "bg-ocean-500",
+    icon: "/images/support-education.png",
     title: "Education & Awareness",
     body: "Teaching future generations the value of water and how to protect it.",
   },
   {
-    icon: Handshake,
-    bg: "bg-teal-600",
+    icon: "/images/support-partnerships.png",
     title: "Community Partnerships",
     body: "Working together to build strong, sustainable solutions.",
   },
@@ -239,11 +225,15 @@ export default function ProtectingWaterPage() {
             {support.map((s, i) => (
               <Reveal key={s.title} delay={i * 0.06} variant="up">
                 <div className="h-full text-center lg:border-l lg:border-cream-300 lg:px-5 lg:first:border-l-0">
-                  <span
-                    className={`icon-pop mx-auto grid h-16 w-16 place-items-center rounded-full text-cream-50 ${s.bg}`}
-                  >
-                    <s.icon className="h-8 w-8" strokeWidth={1.6} />
-                  </span>
+                  {/* Supplied artwork — each badge carries its own colour, so
+                      the per-item background classes are gone with it. */}
+                  <Image
+                    src={s.icon}
+                    alt=""
+                    width={224}
+                    height={224}
+                    className="icon-pop mx-auto h-16 w-16 object-contain"
+                  />
                   <h3 className="mt-4 font-display text-base font-bold uppercase leading-tight tracking-wide text-teal-700">
                     {s.title}
                   </h3>
