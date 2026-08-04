@@ -289,7 +289,7 @@ export default function ProtectingWaterPage() {
               <h2 className="font-display text-2xl font-bold uppercase leading-tight tracking-wide sm:text-3xl">
                 Together, We Can Protect Our Water.
               </h2>
-              <p className="mt-4 font-display text-xl italic text-teal-100 sm:text-2xl">
+              <p className="mt-4 font-display text-xl italic text-cream-100 sm:text-2xl">
                 For Today. For Tomorrow. For Our Future.
               </p>
             </div>

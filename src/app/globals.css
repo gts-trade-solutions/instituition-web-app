@@ -80,8 +80,10 @@ body {
 h1, h2, h3, h4, .font-display {
   font-family: var(--font-display);
   letter-spacing: 0.005em;
-  /* Anton ships a single weight — don't let font-bold synthesize a fake heavier one. */
-  font-synthesis: none;
+  /* Anton ships a single weight — don't let font-bold synthesize a fake heavier
+     one. "style" still permits an oblique, which display text does use (e.g.
+     the italic straplines on the cause pages); "none" suppressed those too. */
+  font-synthesis: style;
 }
 
 @layer components {
