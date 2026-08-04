@@ -1,15 +1,6 @@
 import Image from "next/image";
 import type { Metadata } from "next";
-import {
-  Bird,
-  AlertTriangle,
-  HandHeart,
-  Check,
-  House,
-  Scale,
-  HeartPulse,
-  GraduationCap,
-} from "lucide-react";
+import { Check, House, Scale, HeartPulse, GraduationCap } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { WovenBorder } from "@/components/WovenBorder";
 import { GivePanel } from "./GivePanel";
@@ -22,7 +13,7 @@ export const metadata: Metadata = {
 
 const pillars = [
   {
-    icon: Bird,
+    icon: "/images/women-icon-importance.png",
     title: "The Importance",
     lead: null,
     points: [
@@ -32,7 +23,7 @@ const pillars = [
     ],
   },
   {
-    icon: AlertTriangle,
+    icon: "/images/women-icon-peril.png",
     title: "The Current Peril",
     lead: null,
     points: [
@@ -43,7 +34,7 @@ const pillars = [
     ],
   },
   {
-    icon: HandHeart,
+    icon: "/images/women-icon-help.png",
     title: "The Need For Help",
     lead: null,
     points: [
@@ -147,9 +138,15 @@ export default function ProtectingWomenPage() {
               <Reveal key={p.title} delay={i * 0.08} variant="up">
                 <div className="h-full lg:border-l lg:border-cream-300 lg:pl-10 lg:first:border-l-0 lg:first:pl-0">
                   <div className="flex items-center gap-4">
-                    <span className="icon-pop grid h-14 w-14 shrink-0 place-items-center rounded-full bg-rust-600 text-cream-50">
-                      <p.icon className="h-7 w-7" />
-                    </span>
+                    {/* Supplied artwork — each badge brings its own maroon
+                        circle, so no coloured background is needed behind it. */}
+                    <Image
+                      src={p.icon}
+                      alt=""
+                      width={256}
+                      height={256}
+                      className="icon-pop h-14 w-14 shrink-0 object-contain"
+                    />
                     <h2 className="font-display text-xl font-bold uppercase tracking-wide text-rust-600 sm:text-2xl">
                       {p.title}
                     </h2>
