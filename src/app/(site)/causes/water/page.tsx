@@ -3,8 +3,6 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import {
   Droplet,
-  AlertTriangle,
-  Users,
   Check,
   X,
   Sprout,
@@ -25,7 +23,7 @@ export const metadata: Metadata = {
 
 const pillars = [
   {
-    icon: Droplet,
+    icon: "/images/water-icon-importance.png",
     title: "The Importance",
     tone: "text-teal-600",
     bg: "bg-teal-600",
@@ -40,7 +38,7 @@ const pillars = [
     ],
   },
   {
-    icon: AlertTriangle,
+    icon: "/images/water-icon-peril.png",
     title: "The Current Peril",
     tone: "text-rust-600",
     bg: "bg-rust-600",
@@ -55,7 +53,7 @@ const pillars = [
     ],
   },
   {
-    icon: Users,
+    icon: "/images/water-icon-help.png",
     title: "The Need For Help",
     tone: "text-ocean-500",
     bg: "bg-ocean-500",
@@ -192,11 +190,15 @@ export default function ProtectingWaterPage() {
               <Reveal key={p.title} delay={i * 0.08} variant="up">
                 <div className="h-full lg:border-l lg:border-cream-300 lg:pl-10 lg:first:border-l-0 lg:first:pl-0">
                   <div className="flex items-center gap-4">
-                    <span
-                      className={`icon-pop grid h-14 w-14 shrink-0 place-items-center rounded-full text-cream-50 ${p.bg}`}
-                    >
-                      <p.icon className="h-7 w-7" />
-                    </span>
+                    {/* Supplied artwork — each badge brings its own coloured
+                        circle, so no background is needed behind it. */}
+                    <Image
+                      src={p.icon}
+                      alt=""
+                      width={256}
+                      height={256}
+                      className="icon-pop h-14 w-14 shrink-0 object-contain"
+                    />
                     <h2
                       className={`font-display text-xl font-bold uppercase tracking-wide ${p.tone} sm:text-2xl`}
                     >
