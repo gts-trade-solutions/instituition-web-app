@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { Metadata } from "next";
-import { Check, House, Scale, HeartPulse, GraduationCap } from "lucide-react";
+import { Check } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { WovenBorder } from "@/components/WovenBorder";
 import { GivePanel } from "./GivePanel";
@@ -48,22 +48,22 @@ const pillars = [
 
 const impact = [
   {
-    icon: House,
+    icon: "/images/impact-shelter.png",
     title: "Safe Shelter & Housing",
     body: "Providing emergency shelter and safe housing for Native women and their children.",
   },
   {
-    icon: Scale,
+    icon: "/images/impact-legal.png",
     title: "Legal Advocacy",
     body: "Supporting legal services to pursue justice and accountability for survivors.",
   },
   {
-    icon: HeartPulse,
+    icon: "/images/impact-healing.png",
     title: "Healing & Wellness",
     body: "Funding culturally grounded healing, trauma recovery, and mental health services.",
   },
   {
-    icon: GraduationCap,
+    icon: "/images/impact-prevention.png",
     title: "Prevention & Education",
     body: "Investing in education, awareness, and prevention programs to end violence in our communities.",
   },
@@ -210,9 +210,15 @@ export default function ProtectingWomenPage() {
                 <ul className="mt-7 space-y-6">
                   {impact.map((it) => (
                     <li key={it.title} className="flex gap-4">
-                      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-teal-700 text-cream-50">
-                        <it.icon className="h-6 w-6" strokeWidth={1.7} />
-                      </span>
+                      {/* Supplied artwork — each badge brings its own teal
+                          circle, so no background is needed behind it. */}
+                      <Image
+                        src={it.icon}
+                        alt=""
+                        width={192}
+                        height={192}
+                        className="h-12 w-12 shrink-0 object-contain"
+                      />
                       <div>
                         <h3 className="font-display text-base font-bold uppercase tracking-wide text-navy-600">
                           {it.title}
