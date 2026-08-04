@@ -92,7 +92,7 @@ export default async function HomePage() {
       {/* ── Info bar ─────────────────────────────────────── */}
       <section className="bg-[#FBF3EA]">
         <div className="w-full px-5 py-12 sm:px-10 xl:px-14">
-          <div className="flex flex-col items-center gap-8 lg:flex-row lg:flex-wrap lg:justify-center lg:gap-x-10 lg:gap-y-8">
+          <div className="flex flex-col items-center gap-8 lg:flex-row lg:flex-wrap lg:justify-center lg:gap-x-10 lg:gap-y-8 min-[1800px]:flex-nowrap min-[1800px]:justify-between min-[1800px]:gap-x-5">
             <div className="flex items-center gap-5">
               <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-teal-600 text-cream-50 sm:h-20 sm:w-20">
                 <Calendar className="h-8 w-8 sm:h-10 sm:w-10" />

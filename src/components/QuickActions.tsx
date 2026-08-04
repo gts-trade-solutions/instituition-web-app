@@ -20,6 +20,8 @@ const actions = [
 export function QuickActions() {
   const pathname = usePathname();
 
+  if (pathname === "/causes/water" || pathname === "/causes/women") return null;
+
   return (
     <nav
       aria-label="Quick actions"

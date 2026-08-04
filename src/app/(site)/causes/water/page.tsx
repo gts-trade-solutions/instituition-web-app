@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { Droplet, Check, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { FlourishTitle } from "@/components/Section";
 import { WovenBorder } from "@/components/WovenBorder";
@@ -93,13 +93,11 @@ const CAUSE = "Protecting Our Water";
 export default function ProtectingWaterPage() {
   return (
     <>
-      {/* Light hero: the headline sits on cream at the left and the photograph
-          bleeds off the right. White type over the photo was unreadable — the
-          river scene is bright, with no dark area to sit text on. */}
+      {/* Full-width river hero with a cream fade behind the left-hand copy. */}
       <section>
         <WovenBorder />
-        <div className="relative isolate overflow-hidden bg-cream-50">
-          <div className="absolute inset-y-0 right-0 -z-10 w-full sm:w-[70%] lg:w-[64%]">
+        <div className="relative isolate overflow-hidden bg-cream-50 lg:aspect-[1024/438] 2xl:aspect-auto 2xl:h-[640px]">
+          <div className="absolute inset-0 -z-10">
             <Image
               // Full-resolution river photo (1874x839). The cause-*-v2 files
               // are 900px card assets and visibly softened when stretched.
@@ -107,17 +105,16 @@ export default function ProtectingWaterPage() {
               alt="A clear river running through forest and mountains"
               fill
               priority
-              sizes="(max-width: 640px) 100vw, 66vw"
+              sizes="100vw"
               className="object-cover"
             />
-            {/* Fade to cream on the left edge, and a light veil on small
-                screens where the photo sits behind the text. */}
-            <div className="absolute inset-0 bg-gradient-to-r from-cream-50 via-cream-50/70 to-transparent sm:via-cream-50/20 sm:to-transparent" />
-            <div className="absolute inset-0 bg-cream-50/55 sm:hidden" />
+            {/* Cream fade protects the copy while leaving the river visible. */}
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,#FBF3EA_0%,rgba(251,243,234,0.94)_27%,rgba(251,243,234,0.68)_38%,rgba(251,243,234,0)_58%)]" />
+            <div className="absolute inset-0 bg-cream-50/35 sm:hidden" />
           </div>
 
-          <div className="container-page py-12 sm:py-16 lg:py-20">
-            <div className="max-w-lg">
+          <div className="container-page h-full py-10 sm:py-12 lg:py-9 xl:py-20">
+            <div className="max-w-md">
               <h1 className="font-display text-4xl font-bold uppercase leading-[1.08] sm:text-5xl">
                 <span className="text-navy-700">Protecting Water—</span>
                 <br />
@@ -125,26 +122,29 @@ export default function ProtectingWaterPage() {
                 <br />
                 <span className="text-teal-600">Mother Earth</span>
               </h1>
-              <p className="mt-5 max-w-sm leading-relaxed text-ink sm:text-lg">
+              <p className="mt-4 max-w-[390px] font-semibold leading-[1.35] text-ink sm:text-xl">
                 Water is sacred. It sustains all life. It is our responsibility
                 to protect it for generations to come.
               </p>
-              <span className="mt-7 grid h-16 w-16 place-items-center rounded-full bg-teal-700 text-cream-50">
-                <Droplet className="h-8 w-8" strokeWidth={1.5} />
-              </span>
+              <Image
+                src="/images/cause-icon-water.png"
+                alt=""
+                width={256}
+                height={256}
+                className="mt-5 h-20 w-20 object-contain sm:h-24 sm:w-24"
+              />
             </div>
           </div>
         </div>
-        <WovenBorder />
       </section>
 
       {/* Standfirst band — flat navy with a woven diamond either side of the
           line, as the design has it. */}
-      <section className="bg-[#1B3B5F] py-7 sm:py-8">
+      <section className="bg-[#1B3B5F] py-3.5 sm:py-4">
         <div className="container-page">
           <div className="flex items-center justify-center gap-6 sm:gap-10">
             <WeaveDiamond className="hidden shrink-0 sm:block" />
-            <p className="max-w-3xl text-center text-lg font-semibold leading-relaxed text-cream-50 sm:text-xl">
+            <p className="max-w-3xl text-center text-lg font-semibold leading-[1.35] text-cream-50 sm:text-xl">
               Clean water is essential to the health of our people, our
               communities, our economies, and the survival of future generations.
             </p>
@@ -298,7 +298,7 @@ export default function ProtectingWaterPage() {
                 Make A Difference Today
               </h3>
               <p className="mt-3 text-cream-100/85">
-                Choose to give when you register for a seminar or make a
+                Choose to give when you register for a seminar <br></br> or make a
                 donation online.
               </p>
               <Link
@@ -337,4 +337,3 @@ function WeaveDiamond({ className = "" }: { className?: string }) {
     </span>
   );
 }
-

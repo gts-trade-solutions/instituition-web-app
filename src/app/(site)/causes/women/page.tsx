@@ -79,15 +79,15 @@ export default function ProtectingWomenPage() {
           under a dark wash. */}
       <section>
         <WovenBorder />
-        <div className="relative isolate overflow-hidden bg-cream-50">
+        <div className="relative isolate overflow-hidden bg-cream-50 lg:aspect-[1024/409] 2xl:aspect-auto 2xl:h-[640px]">
           {/* Photo layer — right-anchored, faded out towards the text. */}
-          <div className="absolute inset-y-0 right-0 -z-10 w-full sm:w-[68%] lg:w-[62%]">
+          <div className="absolute inset-0 -z-10">
             <Image
               src="/images/cause-women-hero.jpg"
               alt="A Native American woman looking out over a river valley at sunset"
               fill
               priority
-              sizes="(max-width: 640px) 100vw, 65vw"
+              sizes="100vw"
               className="object-cover"
               // The hero band is far wider than the photo, so cover crops
               // vertically. Bias towards her face and the sunset horizon rather
@@ -96,11 +96,11 @@ export default function ProtectingWomenPage() {
             />
             {/* Fade to cream on the left edge, and a light veil on small
                 screens where the photo sits behind the text. */}
-            <div className="absolute inset-0 bg-gradient-to-r from-cream-50 via-cream-50/70 to-transparent sm:via-cream-50/20 sm:to-transparent" />
-            <div className="absolute inset-0 bg-cream-50/55 sm:hidden" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,#FBF3EA_0%,rgba(251,243,234,0.94)_27%,rgba(251,243,234,0.68)_38%,rgba(251,243,234,0)_58%)]" />
+            <div className="absolute inset-0 bg-cream-50/35 sm:hidden" />
           </div>
 
-          <div className="container-page py-12 sm:py-16 lg:py-20">
+          <div className="container-page h-full py-10 sm:py-12 lg:py-5 xl:py-12 2xl:py-20">
             <div className="max-w-lg">
               <h1 className="font-display text-4xl font-bold uppercase leading-[1.05] text-[#8B1E24] sm:text-5xl lg:text-6xl">
                 Protecting
@@ -119,7 +119,7 @@ export default function ProtectingWomenPage() {
               <p className="mt-5 font-display text-lg tracking-wide text-teal-700 sm:text-xl">
                 Honoring Our Women. Strengthening Our Nations.
               </p>
-              <p className="mt-4 max-w-md leading-relaxed text-ink sm:text-lg">
+              <p className="mt-4 max-w-[390px] font-medium leading-[1.45] text-ink sm:text-lg">
                 Native women are the heart of our families, the strength of our
                 communities, and the keepers of our traditions. Yet they face a
                 crisis of violence, disappearance, and injustice.
@@ -127,7 +127,6 @@ export default function ProtectingWomenPage() {
             </div>
           </div>
         </div>
-        <WovenBorder />
       </section>
 
       {/* Importance / peril / need */}

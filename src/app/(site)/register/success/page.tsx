@@ -4,6 +4,7 @@ import { CheckCircle2, ArrowRight, Clock, AlertCircle } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getUser } from "@/lib/user-auth";
 import { formatCurrency } from "@/lib/format";
+import { CertificatePreview } from "@/components/CertificatePreview";
 
 export const metadata: Metadata = { title: "Registration Confirmed" };
 
@@ -11,6 +12,8 @@ type View = {
   state: "confirmed" | "demo" | "pending";
   amountCents: number | null;
   email: string | null;
+  /** Set once the registration is confirmed, so the certificate can be shown. */
+  registrationId: string | null;
 };
 
 export default async function SuccessPage({
@@ -38,12 +41,18 @@ export default async function SuccessPage({
       const reg = await prisma.registration.findUnique({ where: { id: regId } });
       if (reg && reg.userId === user.userId) {
         if (sp.demo) {
-          view = { state: "demo", amountCents: reg.amountCents, email: reg.email };
+          view = {
+            state: "demo",
+            amountCents: reg.amountCents,
+            email: reg.email,
+            registrationId: reg.id,
+          };
         } else {
           view = {
             state: reg.status === "PAID" ? "confirmed" : "pending",
             amountCents: reg.amountCents,
             email: reg.email,
+            registrationId: reg.id,
           };
         }
       }
@@ -100,6 +109,7 @@ export default async function SuccessPage({
       }
       details={{ email: view.email, amountCents: view.amountCents }}
       primary={{ href: "/", label: "Back to Home" }}
+      certificateId={view.registrationId}
     />
   );
 }
@@ -111,6 +121,7 @@ function Shell({
   body,
   details,
   primary,
+  certificateId,
 }: {
   icon: React.ReactNode;
   tint: string;
@@ -118,10 +129,18 @@ function Shell({
   body: string;
   details?: { email: string | null; amountCents: number | null };
   primary: { href: string; label: string };
+  /** When set, the registration's certificate is shown below the details. */
+  certificateId?: string | null;
 }) {
   return (
     <section className="container-page flex min-h-[70vh] items-center justify-center py-12">
-      <div className="card max-w-lg p-8 text-center sm:p-12">
+      {/* Widens once a certificate is on show — at the narrow width it would
+          shrink to something unreadable. */}
+      <div
+        className={`card p-8 text-center sm:p-12 ${
+          certificateId ? "max-w-3xl" : "max-w-lg"
+        }`}
+      >
         <span className={`mx-auto grid h-20 w-20 place-items-center rounded-full ${tint}`}>
           {icon}
         </span>
@@ -144,6 +163,17 @@ function Shell({
                 </span>
               </div>
             )}
+          </div>
+        )}
+
+        {certificateId && (
+          <div className="mt-8">
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-navy-600">
+              Your Certificate of Registration
+            </h2>
+            <div className="mt-4">
+              <CertificatePreview registrationId={certificateId} />
+            </div>
           </div>
         )}
 
