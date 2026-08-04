@@ -138,33 +138,18 @@ export default function ProtectingWaterPage() {
         <WovenBorder />
       </section>
 
-      {/* Standfirst band — the ripple and the river emblem are part of the
-          artwork, which is why there are no separate ornaments here. */}
-      <section className="relative isolate overflow-hidden bg-navy-700">
-        <Image
-          src="/images/water-band-plain.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          className="-z-10 object-cover"
-        />
-        {/* Emblem placed rather than baked into the background, so it scales to
-            the band's height instead of being cropped by object-cover. */}
-        <Image
-          src="/images/water-emblem.png"
-          alt=""
-          width={290}
-          height={287}
-          className="pointer-events-none absolute -z-10 hidden h-[80%] w-auto sm:right-6 sm:top-1/2 sm:block sm:-translate-y-1/2 lg:right-12"
-        />
-        {/* The artwork leaves its middle clear, but on narrow screens the text
-            crosses the ripple, so a light scrim keeps it legible. */}
-        <div className="absolute inset-0 -z-10 bg-navy-800/45 sm:bg-navy-800/25" />
-        <div className="container-page py-8 sm:py-10">
-          <p className="mx-auto max-w-3xl text-center text-lg font-semibold leading-relaxed text-cream-50 sm:text-xl">
-            Clean water is essential to the health of our people, our
-            communities, our economies, and the survival of future generations.
-          </p>
+      {/* Standfirst band — flat navy with a woven diamond either side of the
+          line, as the design has it. */}
+      <section className="bg-[#1B3B5F] py-7 sm:py-8">
+        <div className="container-page">
+          <div className="flex items-center justify-center gap-6 sm:gap-10">
+            <WeaveDiamond className="hidden shrink-0 sm:block" />
+            <p className="max-w-3xl text-center text-lg font-semibold leading-relaxed text-cream-50 sm:text-xl">
+              Clean water is essential to the health of our people, our
+              communities, our economies, and the survival of future generations.
+            </p>
+            <WeaveDiamond className="hidden shrink-0 sm:block" />
+          </div>
         </div>
       </section>
 
@@ -329,6 +314,27 @@ export default function ProtectingWaterPage() {
 
       <WovenBorder size="lg" />
     </>
+  );
+}
+
+/**
+ * Woven diamond flanking the standfirst: a stepped outer diamond with a solid
+ * centre and a small diamond off each side, drawn rather than shipped as an
+ * image so it stays crisp and picks up the band's palette.
+ */
+function WeaveDiamond({ className = "" }: { className?: string }) {
+  return (
+    <span className={className} aria-hidden>
+      <svg width="74" height="34" viewBox="0 0 74 34" fill="none">
+        <g stroke="#7FB2D9" strokeWidth="1.6" fill="none">
+          <path d="M37 2 L52 17 L37 32 L22 17 Z" />
+          <path d="M37 8 L46 17 L37 26 L28 17 Z" />
+          <path d="M9 17 L14 12 L19 17 L14 22 Z" />
+          <path d="M55 17 L60 12 L65 17 L60 22 Z" />
+        </g>
+        <path d="M37 12 L42 17 L37 22 L32 17 Z" fill="#7FB2D9" />
+      </svg>
+    </span>
   );
 }
 
