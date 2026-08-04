@@ -1,14 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import {
-  Landmark,
-  Trees,
-  Users,
-  TrendingUp,
-  GraduationCap,
-  Check,
-} from "lucide-react";
+import { Check } from "lucide-react";
 import { getPageContent } from "@/lib/content";
 import { Reveal } from "@/components/Reveal";
 import { WovenBorder } from "@/components/WovenBorder";
@@ -20,11 +13,11 @@ export const metadata: Metadata = {
 };
 
 const empowers = [
-  { icon: Landmark, tint: "bg-teal-600", title: "Govern Ourselves", body: "Make decisions that reflect our values, traditions, and the needs of our people." },
-  { icon: Trees, tint: "bg-rust-500", title: "Protect Our Lands and Resources", body: "Care for the lands, waters, and natural resources entrusted to us for future generations." },
-  { icon: Users, tint: "bg-teal-600", title: "Strengthen Our Communities", body: "Build healthy, safe, and vibrant communities through programs and services we control." },
-  { icon: TrendingUp, tint: "bg-plum-500", title: "Build Economic Independence", body: "Create jobs, support tribal enterprises, and strengthen our financial future." },
-  { icon: GraduationCap, tint: "bg-rust-500", title: "Invest in Our Future Generations", body: "Provide education, training, and opportunities so our youth can lead with pride and purpose." },
+  { icon: "/images/why-govern-ourselves.png", title: "Govern Ourselves", body: "Make decisions that reflect our values, traditions, and the needs of our people." },
+  { icon: "/images/why-protect-lands.png", title: "Protect Our Lands and Resources", body: "Care for the lands, waters, and natural resources entrusted to us for future generations." },
+  { icon: "/images/why-strengthen-communities.png", title: "Strengthen Our Communities", body: "Build healthy, safe, and vibrant communities through programs and services we control." },
+  { icon: "/images/why-economic-independence.png", title: "Build Economic Independence", body: "Create jobs, support tribal enterprises, and strengthen our financial future." },
+  { icon: "/images/why-future-generations.png", title: "Invest in Our Future Generations", body: "Provide education, training, and opportunities so our youth can lead with pride and purpose." },
 ];
 
 const trainingPoints = [
@@ -101,9 +94,13 @@ export default async function WhyPage() {
             {empowers.map((e, i) => (
               <Reveal key={e.title} delay={i * 0.06} variant="blur">
                 <div className={`group flex h-full cursor-default flex-col items-center px-5 text-center ${i > 0 ? "lg:border-l lg:border-cream-300" : ""}`}>
-                  <span className={`icon-pop grid h-16 w-16 place-items-center rounded-full text-cream-50 shadow-card ${e.tint}`}>
-                    <e.icon className="h-8 w-8" />
-                  </span>
+                  <Image
+                    src={e.icon}
+                    alt=""
+                    width={128}
+                    height={128}
+                    className="icon-pop h-16 w-16 rounded-full object-contain shadow-card"
+                  />
                   <h3 className="mt-4 font-display text-base font-bold uppercase leading-tight tracking-wide text-navy-600">
                     {e.title}
                   </h3>
@@ -212,9 +209,13 @@ export default async function WhyPage() {
       <section className="bg-[#002E33] text-cream-50">
         <div className="container-page flex flex-col items-center gap-6 py-12 text-center lg:flex-row lg:justify-between lg:text-left">
           <div className="flex items-center gap-5">
-            <span className="hidden h-16 w-16 shrink-0 place-items-center rounded-full border-2 border-gold-400 text-gold-400 sm:grid">
-              <Users className="h-8 w-8" />
-            </span>
+            <Image
+              src="/images/why-cta-together.png"
+              alt=""
+              width={128}
+              height={128}
+              className="hidden h-16 w-16 shrink-0 rounded-full object-cover sm:block"
+            />
             <h2 className="font-display text-xl font-bold uppercase tracking-wide sm:text-2xl">
               {c.bannerTitle}
               <span className="mt-1 block text-sm font-normal normal-case tracking-normal text-cream-100/80">

@@ -2,10 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import {
-  Landmark,
-  ReceiptText,
-  ChartColumnIncreasing,
-  FileUser,
   DollarSign,
   UtensilsCrossed,
   Users,
@@ -28,12 +24,12 @@ export const metadata: Metadata = {
 
 const day1 = [
   {
-    icon: Landmark,
+    icon: "/images/seminar-cash-reconciliation.png",
     title: "AI-Enhanced Cash Reconciliation",
     body: "Learn monthly cash reconciliation using AI tools that save time, reduce errors, and strengthen Tribal financial integrity.",
   },
   {
-    icon: ReceiptText,
+    icon: "/images/seminar-accounts-payable.png",
     title: "AI-Enhanced Accounts Payable",
     body: "Streamline invoice processing, approvals, and payments with AI automation and best practices for Tribal AP operations.",
   },
@@ -41,12 +37,12 @@ const day1 = [
 
 const day2 = [
   {
-    icon: ChartColumnIncreasing,
+    icon: "/images/seminar-idc-proposals.png",
     title: "AI-Assisted IDC Rate Proposals",
     body: "Use AI to write stronger IDC grant narratives, build accurate budgets, and increase success in securing funding for your Nation.",
   },
   {
-    icon: FileUser,
+    icon: "/images/seminar-resume.png",
     title: "AI-Enabled Resume Creation & Applying for Jobs",
     body: "Create standout resumes, cover letters, and use AI tools that open doors to new opportunities.",
   },
@@ -297,7 +293,7 @@ function CurriculumColumn({
 }: {
   label: string;
   tint: string;
-  cards: { icon: typeof Landmark; title: string; body: string }[];
+  cards: { icon: string; title: string; body: string }[];
   iconTint: string;
   accent: string;
 }) {
@@ -310,9 +306,13 @@ function CurriculumColumn({
         <div className="grid gap-5 sm:grid-cols-2">
           {cards.map((card) => (
             <div key={card.title} className="group flex h-full flex-col items-center rounded-lg border border-cream-300 bg-cream-50 p-6 text-center transition-shadow duration-300 hover:shadow-card">
-              <span className={`icon-pop grid h-20 w-20 place-items-center rounded-full text-cream-50 ${iconTint}`}>
-                <card.icon className="h-10 w-10" />
-              </span>
+              <Image
+                src={card.icon}
+                alt=""
+                width={160}
+                height={160}
+                className="icon-pop h-20 w-20 rounded-full object-contain"
+              />
               <h3 className={`mt-4 font-display text-xl font-bold uppercase leading-tight tracking-wide ${accent}`}>
                 {card.title}
               </h3>

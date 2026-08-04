@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Users, Target, Landmark, Tag, Check } from "lucide-react";
+import { Tag, Check } from "lucide-react";
 import { getPageContent } from "@/lib/content";
 import { Reveal } from "@/components/Reveal";
 import { CountUp } from "@/components/CountUp";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const pillars = [
   {
-    icon: Users,
+    icon: "/images/about-why-we-exist.png",
     title: "Why We Exist",
     body: [
       "Tribal governments and organizations face increasing demands with limited resources. Many systems remain manual and inefficient.",
@@ -22,7 +22,7 @@ const pillars = [
     ],
   },
   {
-    icon: Target,
+    icon: "/images/about-our-approach.png",
     title: "Our Approach",
     body: [
       "Our training is hands-on, practical, and designed for immediate use. Every concept connects directly to real tribal operations.",
@@ -30,7 +30,7 @@ const pillars = [
     ],
   },
   {
-    icon: Landmark,
+    icon: "/images/about-our-focus.png",
     title: "Our Focus",
     body: [
       "We serve tribal governments, staff, enterprises, and workforce programs.",
@@ -107,11 +107,13 @@ export default async function AboutPage() {
                   } ${i < pillars.length - 1 ? "md:pr-8" : ""}`}
                 >
                   <div className="flex items-center gap-4">
-                    <span className={`icon-pop grid h-16 w-16 shrink-0 place-items-center rounded-full text-cream-50 ${
-                      i === 1 ? "bg-rust-500" : "bg-teal-600"
-                    }`}>
-                      <p.icon className="h-8 w-8" />
-                    </span>
+                    <Image
+                      src={p.icon}
+                      alt=""
+                      width={128}
+                      height={128}
+                      className="icon-pop h-16 w-16 shrink-0 rounded-full object-contain"
+                    />
                     <div>
                       <h3 className="font-display text-2xl uppercase tracking-wide text-navy-600">
                         {p.title}

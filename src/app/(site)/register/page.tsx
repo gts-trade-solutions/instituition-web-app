@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { XCircle, Users, Feather } from "lucide-react";
+import { XCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { getPageContent } from "@/lib/content";
@@ -94,6 +94,24 @@ export default async function RegisterPage({
             </div>
           )}
 
+          <div className="mb-10 grid gap-3 rounded-lg border border-cream-300 bg-cream-100 p-4 sm:grid-cols-3">
+            {[
+              ["/images/register-step-profile.png", "Participant Details"],
+              ["/images/register-step-calendar.png", "Choose Seminar"],
+              ["/images/register-step-summary.png", "Review & Pay"],
+            ].map(([src, label], index) => (
+              <div key={label} className="flex items-center gap-3 rounded-md bg-cream-50 px-4 py-3">
+                <Image src={src} alt="" width={64} height={64} className="h-10 w-10 object-contain" />
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-rust-500">
+                    Step {index + 1}
+                  </p>
+                  <p className="font-display font-bold uppercase text-navy-600">{label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
           <div id="register" className="scroll-mt-28">
             <RegisterForm
               seminars={options}
@@ -109,9 +127,13 @@ export default async function RegisterPage({
           {/* Bring your team */}
           <div className="mt-10 grid gap-6 rounded-lg border border-cream-300 bg-cream-200/50 p-8 lg:grid-cols-2">
             <div className="flex items-center gap-4">
-              <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-teal-600 text-cream-50">
-                <Users className="h-7 w-7" />
-              </span>
+              <Image
+                src="/images/register-group.png"
+                alt=""
+                width={112}
+                height={112}
+                className="h-14 w-14 shrink-0 rounded-full object-contain"
+              />
               <div>
                 <p className="font-display font-bold uppercase tracking-wide text-navy-600">
                   Bring Your Team
@@ -128,9 +150,13 @@ export default async function RegisterPage({
               </div>
             </div>
             <div className="flex items-center gap-4 border-cream-300 lg:border-l lg:pl-8">
-              <span className="hidden h-14 w-14 shrink-0 place-items-center rounded-full bg-teal-600 text-cream-50 sm:grid">
-                <Feather className="h-7 w-7" strokeWidth={1.5} />
-              </span>
+              <Image
+                src="/images/register-mission-feather.png"
+                alt=""
+                width={112}
+                height={112}
+                className="hidden h-14 w-14 shrink-0 rounded-full object-contain sm:block"
+              />
               <p className="text-ink-soft">
                 Together, we build stronger Nations through education, skills, and
                 stewardship of our people, our lands, and our future.{" "}

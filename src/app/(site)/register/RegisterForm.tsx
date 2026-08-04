@@ -1,19 +1,8 @@
 "use client";
 
 import { type ChangeEvent, useActionState, useState } from "react";
-import {
-  Lock,
-  AlertCircle,
-  ShieldCheck,
-  User,
-  Calendar,
-  ClipboardList,
-  HeartHandshake,
-  Users,
-  Droplet,
-  Feather,
-  Tag,
-} from "lucide-react";
+import { Lock, AlertCircle } from "lucide-react";
+import Image from "next/image";
 import { submitRegistration, type RegisterState } from "./actions";
 import { formatCurrency, formatDateRange } from "@/lib/format";
 
@@ -38,7 +27,7 @@ const causeDefs = [
     key: "women",
     name: "Protecting Native American Women",
     desc: "Support programs that provide safety, resources, and empowerment.",
-    Icon: Users,
+    imageSrc: "/images/register-group.png",
     ring: "bg-[#6b46a3]",
     text: "text-[#6b46a3]",
   },
@@ -46,7 +35,7 @@ const causeDefs = [
     key: "water",
     name: "Protecting Our Water",
     desc: "Safeguard clean water for our people, our lands, and future generations.",
-    Icon: Droplet,
+    imageSrc: "/images/register-cause-water.png",
     ring: "bg-teal-600",
     text: "text-teal-700",
   },
@@ -54,7 +43,7 @@ const causeDefs = [
     key: "sovereignty",
     name: "Supporting Native American Sovereignty",
     desc: "Strengthen self-governance, protect rights, and build a strong future for our Nations.",
-    Icon: Feather,
+    imageSrc: "/images/register-cause-sovereignty.png",
     ring: "bg-rust-500",
     text: "text-rust-600",
   },
@@ -162,7 +151,7 @@ export function RegisterForm({
           </div>
         )}
 
-        <SectionHeader icon={User} title="Participant Information" />
+        <SectionHeader imageSrc="/images/register-participant.png" title="Participant Information" />
 
         <div className="space-y-5">
           <div className="grid gap-5 sm:grid-cols-2">
@@ -192,7 +181,7 @@ export function RegisterForm({
         {/* Seminar dates */}
         <fieldset id="dates" className="scroll-mt-28 space-y-4">
           <legend className="sr-only">Select a seminar date</legend>
-          <SectionHeader icon={Calendar} title="Select Seminar Date" />
+          <SectionHeader imageSrc="/images/register-calendar.png" title="Select Seminar Date" />
           <div className="space-y-3">
             {seminars.map((s) => {
               const active = seminarId === s.id;
@@ -227,7 +216,13 @@ export function RegisterForm({
           </div>
 
           <div className="flex items-center gap-3 rounded-lg border border-cream-300 bg-teal-50/40 px-4 py-3">
-            <ShieldCheck className="h-6 w-6 shrink-0 text-teal-700" />
+            <Image
+              src="/images/register-secure.png"
+              alt=""
+              width={64}
+              height={64}
+              className="h-8 w-8 shrink-0 object-contain"
+            />
             <p className="text-sm text-ink-soft">
               Your information is secure and will never be shared. We respect your privacy.
             </p>
@@ -240,7 +235,13 @@ export function RegisterForm({
         {/* Seminar summary */}
         <div className="card overflow-hidden">
           <div className="flex items-center gap-3 bg-teal-800 px-5 py-4">
-            <ClipboardList className="h-5 w-5 text-cream-50" />
+            <Image
+              src="/images/register-step-summary.png"
+              alt=""
+              width={48}
+              height={48}
+              className="h-7 w-7 rounded object-contain"
+            />
             <h3 className="font-display font-bold uppercase tracking-wide text-cream-50">
               Seminar Summary
             </h3>
@@ -280,7 +281,13 @@ export function RegisterForm({
         {/* Optional contributions */}
         <div className="card space-y-5 p-5">
           <div className="flex items-center gap-2.5">
-            <HeartHandshake className="h-6 w-6 text-teal-700" />
+            <Image
+              src="/images/register-contributions.png"
+              alt=""
+              width={64}
+              height={64}
+              className="h-8 w-8 shrink-0 rounded-full object-contain"
+            />
             <div>
               <h3 className="font-display font-bold uppercase tracking-wide text-teal-800">
                 Optional Contributions
@@ -303,8 +310,8 @@ export function RegisterForm({
                       : ""
                   }`}
                 >
-                  <span className={`mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full text-cream-50 ${c.ring}`}>
-                    <c.Icon className="h-5 w-5" />
+                  <span className={`mt-0.5 grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full text-cream-50 ${c.ring}`}>
+                    <Image src={c.imageSrc} alt="" width={80} height={80} className="h-full w-full object-cover" />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className={`text-sm font-semibold ${c.text}`}>{c.name}</p>
@@ -339,7 +346,13 @@ export function RegisterForm({
         {/* Payment summary */}
         <div className="card space-y-4 p-5">
           <div className="flex items-center gap-2.5">
-            <Tag className="h-5 w-5 text-teal-700" />
+            <Image
+              src="/images/register-price-tag.png"
+              alt=""
+              width={64}
+              height={64}
+              className="h-7 w-7 shrink-0 object-contain"
+            />
             <h3 className="font-display font-bold uppercase tracking-wide text-teal-800">
               Payment Summary
             </h3>
@@ -393,17 +406,21 @@ export function RegisterForm({
 }
 
 function SectionHeader({
-  icon: Icon,
+  imageSrc,
   title,
 }: {
-  icon: typeof User;
+  imageSrc: string;
   title: string;
 }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal-800 text-cream-50">
-        <Icon className="h-5 w-5" />
-      </span>
+      <Image
+        src={imageSrc}
+        alt=""
+        width={88}
+        height={88}
+        className="h-11 w-11 shrink-0 rounded-full object-cover"
+      />
       <h2 className="font-display text-xl font-bold uppercase tracking-wide text-navy-600">
         {title}
       </h2>

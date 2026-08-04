@@ -1,13 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import {
-  CheckCircle2,
-  Users,
-  TrendingUp,
-  CalendarDays,
-  ArrowRight,
-  DollarSign,
-} from "lucide-react";
+import { CalendarDays, ArrowRight } from "lucide-react";
 import { getPageContent } from "@/lib/content";
 import { getUpcomingSeminars } from "@/lib/seminars";
 import { formatDateRange } from "@/lib/format";
@@ -18,26 +11,22 @@ import { WovenBorder } from "@/components/WovenBorder";
 
 const benefits = [
   {
-    icon: DollarSign,
-    color: "bg-teal-600",
+    icon: "/images/home-benefit-efficiency.png",
     title: "Improve Efficiency",
     body: "Save time and reduce administrative burdens with AI tools.",
   },
   {
-    icon: CheckCircle2,
-    color: "bg-rust-500",
+    icon: "/images/home-benefit-accuracy.png",
     title: "Increase Accuracy",
     body: "Improve financial accuracy and reduce errors.",
   },
   {
-    icon: Users,
-    color: "bg-teal-600",
+    icon: "/images/home-benefit-operations.png",
     title: "Strengthen Operations",
     body: "Build stronger systems and support Tribal governance.",
   },
   {
-    icon: TrendingUp,
-    color: "bg-plum-500",
+    icon: "/images/home-benefit-opportunities.png",
     title: "Build Opportunities",
     body: "Support workforce development and economic growth.",
   },
@@ -169,9 +158,13 @@ export default async function HomePage() {
                 className={`lg:px-6 ${i > 0 ? "lg:border-l-2 lg:border-cream-300" : ""}`}
               >
                 <div className="group flex cursor-default flex-col items-center text-center">
-                  <span className={`icon-pop grid h-20 w-20 place-items-center rounded-full text-cream-50 shadow-card ${b.color}`}>
-                    <b.icon className="h-12 w-12" />
-                  </span>
+                  <Image
+                    src={b.icon}
+                    alt=""
+                    width={160}
+                    height={160}
+                    className="icon-pop h-20 w-20 rounded-full object-contain shadow-card"
+                  />
                   <h3 className="mt-4 font-sans text-xl font-bold text-navy-600">
                     {b.title}
                   </h3>

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { Phone, Mail, MapPin, Clock, Users } from "lucide-react";
 import { getPageContent, getSiteContent } from "@/lib/content";
 import { Reveal } from "@/components/Reveal";
 import { WovenBorder } from "@/components/WovenBorder";
@@ -18,10 +17,10 @@ export default async function ContactPage() {
   const site = await getSiteContent();
 
   const methods = [
-    { icon: Phone, label: "Phone", value: site.phone, href: `tel:${site.phone}` },
-    { icon: Mail, label: "Email", value: site.email, href: `mailto:${site.email}` },
-    { icon: MapPin, label: "Address", value: `${site.address}\n${site.cityStateZip}` },
-    { icon: Clock, label: "Office Hours", value: c.officeHours },
+    { icon: "/images/contact-phone.png", label: "Phone", value: site.phone, href: `tel:${site.phone}` },
+    { icon: "/images/contact-email.png", label: "Email", value: site.email, href: `mailto:${site.email}` },
+    { icon: "/images/contact-location.png", label: "Address", value: `${site.address}\n${site.cityStateZip}` },
+    { icon: "/images/contact-hours.png", label: "Office Hours", value: c.officeHours },
   ];
 
   return (
@@ -49,9 +48,13 @@ export default async function ContactPage() {
           {/* Get in touch */}
           <Reveal className="flex h-full min-w-0 flex-col">
             <div className="flex items-center gap-4">
-              <span className="grid h-14 w-14 place-items-center rounded-full bg-teal-600 text-cream-50">
-                <Mail className="h-7 w-7" />
-              </span>
+              <Image
+                src="/images/contact-email.png"
+                alt=""
+                width={112}
+                height={112}
+                className="h-14 w-14 rounded-full object-contain"
+              />
               <h2 className="font-display text-3xl font-bold uppercase tracking-wide text-navy-600">
                 Get In Touch
               </h2>
@@ -62,9 +65,13 @@ export default async function ContactPage() {
               {methods.map((m) => {
                 const body = (
                   <div className="flex items-start gap-4">
-                    <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-teal-600 text-cream-50">
-                      <m.icon className="h-7 w-7" />
-                    </span>
+                    <Image
+                      src={m.icon}
+                      alt=""
+                      width={112}
+                      height={112}
+                      className="h-14 w-14 shrink-0 rounded-full object-contain"
+                    />
                     <div className="min-w-0">
                       <p className="font-display text-base font-bold uppercase tracking-wide text-navy-600">
                         {m.label}
@@ -87,9 +94,13 @@ export default async function ContactPage() {
           {/* Form */}
           <Reveal delay={0.1} className="min-w-0">
             <div className="flex items-center gap-4">
-              <span className="grid h-14 w-14 place-items-center rounded-full bg-teal-600 text-cream-50">
-                <Users className="h-7 w-7" />
-              </span>
+              <Image
+                src="/images/contact-message.png"
+                alt=""
+                width={112}
+                height={112}
+                className="h-14 w-14 rounded-full object-contain"
+              />
               <h2 className="font-display text-3xl font-bold uppercase tracking-wide text-navy-600">
                 Send Us A Message
               </h2>
@@ -108,9 +119,13 @@ export default async function ContactPage() {
           <div className="flex items-center">
             <div className="container-page py-10 lg:py-12" style={{ marginRight: 0 }}>
               <div className="flex max-w-lg items-start gap-5">
-                <span className="hidden h-16 w-16 shrink-0 place-items-center rounded-full border-2 border-cream-50/60 sm:grid">
-                  <Users className="h-8 w-8" />
-                </span>
+                <Image
+                  src="/images/contact-group-training.png"
+                  alt=""
+                  width={128}
+                  height={128}
+                  className="hidden h-16 w-16 shrink-0 rounded-full object-contain sm:block"
+                />
                 <div>
                   <h2 className="font-display text-2xl font-bold uppercase tracking-wide sm:text-3xl">
                     Interested In Group Training?
