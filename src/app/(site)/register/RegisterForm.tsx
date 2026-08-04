@@ -22,12 +22,21 @@ const roles = [
   "Other",
 ];
 
+const descriptors = [
+  "Finance / Accounting",
+  "Workforce / Education",
+  "Grants / Program Manager",
+  "Tribal Member / Job Seeker",
+  "Enterprise & Operations",
+  "Other",
+];
+
 const causeDefs = [
   {
     key: "women",
     name: "Protecting Native American Women",
     desc: "Support programs that provide safety, resources, and empowerment.",
-    imageSrc: "/images/register-group.png",
+    imageSrc: "/images/register-participant.png",
     ring: "bg-[#6b46a3]",
     text: "text-[#6b46a3]",
   },
@@ -135,7 +144,7 @@ export function RegisterForm({
   return (
     <form
       action={action}
-      className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start"
+      className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14"
     >
       {/* Hidden values the server action needs. The seat fee is derived
           server-side from seminarId — only the optional contribution is sent. */}
@@ -143,7 +152,7 @@ export function RegisterForm({
       <input type="hidden" name="cause" value={selectedCauses.join(", ")} />
 
       {/* ── Left column ─────────────────────────────────────────── */}
-      <div className="space-y-8">
+      <div className="space-y-7">
         {state.error && (
           <div role="alert" className="flex items-center gap-2 rounded-xl bg-rust-500/10 px-4 py-3 text-sm text-rust-600">
             <AlertCircle className="h-4 w-4 shrink-0" />
@@ -151,23 +160,33 @@ export function RegisterForm({
           </div>
         )}
 
-        <SectionHeader imageSrc="/images/register-participant.png" title="Participant Information" />
+        <SectionHeader imageSrc="/images/register-step-profile.png" title="Participant Information" />
 
-        <div className="space-y-5">
-          <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Full Name" name="fullName" required defaultValue={defaultName} error={state.fieldErrors?.fullName} />
-            <EmailField defaultValue={defaultEmail} error={state.fieldErrors?.email} />
-          </div>
+        <div className="space-y-4">
+          <Field
+            label="Full Name"
+            name="fullName"
+            required
+            placeholder="Enter your full name"
+            defaultValue={defaultName}
+            error={state.fieldErrors?.fullName}
+          />
+          <EmailField defaultValue={defaultEmail} error={state.fieldErrors?.email} />
           <PhoneField error={state.fieldErrors?.phone} />
-          <Field label="Organization / Tribe" name="organization" required />
+          <Field
+            label="Organization / Tribe"
+            name="organization"
+            required
+            placeholder="Enter your organization or tribe"
+          />
 
           <div>
             <label htmlFor="role" className="field-label">
-              Which best describes you? <span className="text-rust-500">*</span>
+              Job Title / Role <span className="text-rust-500">*</span>
             </label>
             <select id="role" name="role" className="field-input" defaultValue="" required>
               <option value="" disabled>
-                Select the option that best fits your role
+                Select your role
               </option>
               {roles.map((r) => (
                 <option key={r} value={r}>
@@ -176,19 +195,38 @@ export function RegisterForm({
               ))}
             </select>
           </div>
+
+          <fieldset>
+            <legend className="field-label">
+              Which best describes you? <span className="text-rust-500">*</span>
+            </legend>
+            <div className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+              {descriptors.map((role) => (
+                <label key={role} className="flex cursor-pointer items-center gap-2 text-sm text-ink">
+                  <input
+                    type="radio"
+                    name="descriptor"
+                    value={role}
+                    className="h-4 w-4 border-cream-400 text-teal-700 focus:ring-teal-600"
+                  />
+                  {role}
+                </label>
+              ))}
+            </div>
+          </fieldset>
         </div>
 
         {/* Seminar dates */}
         <fieldset id="dates" className="scroll-mt-28 space-y-4">
           <legend className="sr-only">Select a seminar date</legend>
-          <SectionHeader imageSrc="/images/register-calendar.png" title="Select Seminar Date" />
-          <div className="space-y-3">
+          <SectionHeader imageSrc="/images/register-step-calendar.png" title="Select Seminar Date" />
+          <div className="space-y-2">
             {seminars.map((s) => {
               const active = seminarId === s.id;
               return (
                 <label
                   key={s.id}
-                  className={`flex cursor-pointer items-center gap-3 rounded-lg border p-4 transition-colors ${
+                  className={`flex cursor-pointer items-center gap-3 rounded-md border px-4 py-3 transition-colors ${
                     active
                       ? "border-teal-600 bg-teal-50/60"
                       : "border-cream-300 bg-cream-50 hover:bg-cream-100"
@@ -231,10 +269,10 @@ export function RegisterForm({
       </div>
 
       {/* ── Right column ────────────────────────────────────────── */}
-      <div className="space-y-6 lg:sticky lg:top-24">
+      <div className="space-y-4">
         {/* Seminar summary */}
         <div className="card overflow-hidden">
-          <div className="flex items-center gap-3 bg-teal-800 px-5 py-4">
+          <div className="flex items-center gap-3 bg-teal-800 px-5 py-3">
             <Image
               src="/images/register-step-summary.png"
               alt=""
@@ -247,18 +285,25 @@ export function RegisterForm({
             </h3>
           </div>
           <div className="space-y-4 p-5">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
-                Selected Date:
-              </p>
-              <p className="font-display text-xl font-bold text-navy-600">
-                {selected ? formatDateRange(selected.startDate, selected.endDate) : "—"}
-              </p>
-              {selected && (
-                <p className="text-sm text-ink-soft">
-                  {weekdayRange(selected.startDate, selected.endDate)}
+            <div className="flex items-start gap-3">
+              <Image
+                src="/images/register-calendar.png"
+                alt=""
+                width={64}
+                height={64}
+                className="h-9 w-9 shrink-0 rounded object-contain"
+              />
+              <div>
+                <p className="text-xs font-semibold text-ink">Selected Date:</p>
+                <p className="font-display text-xl font-bold text-navy-600">
+                  {selected ? formatDateRange(selected.startDate, selected.endDate) : "—"}
                 </p>
-              )}
+                {selected && (
+                  <p className="text-sm text-ink-soft">
+                    {weekdayRange(selected.startDate, selected.endDate)}
+                  </p>
+                )}
+              </div>
             </div>
             <p className="border-t border-cream-200 pt-4 text-sm text-ink-soft">
               2-Day Hands-On Training &nbsp;|&nbsp; Meals Included &nbsp;|&nbsp; Certificate Provided
@@ -279,7 +324,7 @@ export function RegisterForm({
         </div>
 
         {/* Optional contributions */}
-        <div className="card space-y-5 p-5">
+        <div className="card space-y-4 p-5">
           <div className="flex items-center gap-2.5">
             <Image
               src="/images/register-contributions.png"
@@ -298,19 +343,19 @@ export function RegisterForm({
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {causeDefs.map((c) => {
               const preselected = c.key === preselectedCauseKey;
               return (
                 <div
                   key={c.key}
-                  className={`flex items-start gap-3 ${
+                  className={`flex items-center gap-3 ${
                     preselected
                       ? "-mx-2 rounded-lg bg-teal-50/70 px-2 py-2 ring-1 ring-teal-600/40"
                       : ""
                   }`}
                 >
-                  <span className={`mt-0.5 grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full text-cream-50 ${c.ring}`}>
+                  <span className={`grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full text-cream-50 ${c.ring}`}>
                     <Image src={c.imageSrc} alt="" width={80} height={80} className="h-full w-full object-cover" />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -387,7 +432,7 @@ export function RegisterForm({
           <button
             type="submit"
             disabled={pending || totalCents < 100 || contribTooHigh}
-            className="btn-accent w-full"
+            className="btn-accent w-full py-3 text-base"
           >
             <Lock className="h-4 w-4" />
             {pending ? "Processing…" : "Proceed to Secure Payment"}
@@ -421,7 +466,7 @@ function SectionHeader({
         height={88}
         className="h-11 w-11 shrink-0 rounded-full object-cover"
       />
-      <h2 className="font-display text-xl font-bold uppercase tracking-wide text-navy-600">
+      <h2 className="font-display text-xl font-bold uppercase tracking-wide text-teal-800">
         {title}
       </h2>
     </div>
@@ -526,7 +571,7 @@ function EmailField({
         type="email"
         required
         autoComplete="email"
-        placeholder="you@example.com"
+        placeholder="Enter your email"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onBlur={() => setTouched(true)}
@@ -567,7 +612,7 @@ function PhoneField({ error }: { error?: string }) {
         inputMode="tel"
         required
         autoComplete="tel"
-        placeholder="(555) 123-4567"
+        placeholder="Enter your phone number"
         value={value}
         onChange={(e) => setValue(formatUsPhone(e.target.value))}
         onBlur={() => setTouched(true)}
@@ -586,6 +631,7 @@ function Field({
   name,
   type = "text",
   required,
+  placeholder,
   defaultValue,
   error,
 }: {
@@ -593,6 +639,7 @@ function Field({
   name: string;
   type?: string;
   required?: boolean;
+  placeholder?: string;
   defaultValue?: string;
   error?: string;
 }) {
@@ -606,6 +653,7 @@ function Field({
         name={name}
         type={type}
         required={required}
+        placeholder={placeholder}
         defaultValue={defaultValue}
         className="field-input"
       />

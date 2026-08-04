@@ -94,24 +94,6 @@ export default async function RegisterPage({
             </div>
           )}
 
-          <div className="mb-10 grid gap-3 rounded-lg border border-cream-300 bg-cream-100 p-4 sm:grid-cols-3">
-            {[
-              ["/images/register-step-profile.png", "Participant Details"],
-              ["/images/register-step-calendar.png", "Choose Seminar"],
-              ["/images/register-step-summary.png", "Review & Pay"],
-            ].map(([src, label], index) => (
-              <div key={label} className="flex items-center gap-3 rounded-md bg-cream-50 px-4 py-3">
-                <Image src={src} alt="" width={64} height={64} className="h-10 w-10 object-contain" />
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-rust-500">
-                    Step {index + 1}
-                  </p>
-                  <p className="font-display font-bold uppercase text-navy-600">{label}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
           <div id="register" className="scroll-mt-28">
             <RegisterForm
               seminars={options}
