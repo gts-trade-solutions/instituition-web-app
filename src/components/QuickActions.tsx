@@ -5,14 +5,12 @@ import { usePathname } from "next/navigation";
 
 /**
  * Floating quick-action pills pinned to the right edge, shown site-wide.
- * Register → registration, Donate → causes, Dates → seminars list, Help → FAQ.
+ * Register → registration, Donate → women's cause, Dates → seminars list, Help → FAQ.
  * The pill for the page you're currently on highlights itself.
  */
 const actions = [
   { href: "/register", label: "Register", accent: "primary" },
-  // Points at Causes & Giving rather than straight to registration: that page
-  // is where the causes and the suggested amounts are explained.
-  { href: "/causes", label: "Donate", accent: "donate" },
+  { href: "/causes/women", label: "Donate", accent: "donate" },
   { href: "/seminars#dates", label: "Dates", accent: null },
   { href: "/faq", label: "Help", accent: null },
 ] as const;

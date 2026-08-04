@@ -134,11 +134,11 @@ function Shell({
 }) {
   return (
     <section className="container-page flex min-h-[70vh] items-center justify-center py-12">
-      {/* Widens once a certificate is on show — at the narrow width it would
-          shrink to something unreadable. */}
+      {/* The certificate uses the full page width so the complete sheet is
+          visible immediately after registration. */}
       <div
         className={`card p-8 text-center sm:p-12 ${
-          certificateId ? "max-w-3xl" : "max-w-lg"
+          certificateId ? "w-full max-w-none" : "max-w-lg"
         }`}
       >
         <span className={`mx-auto grid h-20 w-20 place-items-center rounded-full ${tint}`}>
