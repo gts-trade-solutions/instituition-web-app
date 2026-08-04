@@ -92,16 +92,16 @@ export default async function HomePage() {
       {/* ── Info bar ─────────────────────────────────────── */}
       <section className="bg-[#FBF3EA]">
         <div className="w-full px-5 py-12 sm:px-10 xl:px-14">
-          <div className="flex flex-col items-center gap-8 lg:flex-row lg:flex-wrap lg:justify-center lg:gap-x-10 lg:gap-y-8 min-[1600px]:flex-nowrap min-[1600px]:justify-between min-[1600px]:gap-x-2">
-            <div className="flex items-center gap-5 min-[1600px]:shrink-0">
-              <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-teal-600 text-cream-50 sm:h-20 sm:w-20">
-                <CalendarDays className="h-8 w-8 sm:h-10 sm:w-10" />
+          <div className="flex flex-col items-center gap-8 lg:flex-row lg:flex-wrap lg:justify-center lg:gap-x-10 lg:gap-y-8 xl:flex-nowrap xl:justify-between xl:gap-x-2">
+            <div className="flex items-center gap-5 xl:shrink-0 xl:gap-3 2xl:gap-5">
+              <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-teal-600 text-cream-50 sm:h-20 sm:w-20 xl:h-[clamp(64px,4.2vw,80px)] xl:w-[clamp(64px,4.2vw,80px)]">
+                <CalendarDays className="h-8 w-8 sm:h-10 sm:w-10 xl:h-[clamp(32px,2.1vw,40px)] xl:w-[clamp(32px,2.1vw,40px)]" />
               </span>
               <div>
                 <p className="text-lg font-bold uppercase tracking-wide text-ink-soft">
                   Next Seminar
                 </p>
-                <p className="whitespace-nowrap font-display text-3xl font-bold text-navy-600 sm:text-4xl min-[1600px]:text-[34px]">
+                <p className="whitespace-nowrap font-display text-3xl font-bold text-navy-600 sm:text-4xl xl:text-[clamp(26px,1.9vw,36px)]">
                   {next ? formatDateRange(next.startDate, next.endDate) : "Coming soon"}
                 </p>
               </div>
@@ -109,40 +109,40 @@ export default async function HomePage() {
 
             <div className="hidden h-20 w-px bg-cream-300 lg:block" />
 
-            <div className="text-center min-[1600px]:shrink-0">
-              <p className="font-display text-6xl font-bold text-navy-600">
+            <div className="text-center xl:shrink-0">
+              <p className="font-display text-6xl font-bold text-navy-600 xl:text-[clamp(48px,3.2vw,60px)]">
                 <CountUp value={(next?.priceCents ?? 159500) / 100} prefix="$" />
               </p>
-              <p className="text-lg font-bold uppercase tracking-wide text-ink-soft">
+              <p className="text-lg font-bold uppercase tracking-wide text-ink-soft xl:text-[clamp(14px,1vw,18px)]">
                 {c.priceLabel}
               </p>
-              <p className="text-base font-semibold text-ink-soft">{c.priceNote}</p>
+              <p className="text-base font-semibold text-ink-soft xl:text-[clamp(13px,.85vw,16px)]">{c.priceNote}</p>
             </div>
 
             <div className="hidden h-20 w-px bg-cream-300 lg:block" />
 
-            <div className="grid w-full grid-cols-3 items-start gap-3 sm:flex sm:w-auto sm:flex-nowrap sm:justify-center sm:gap-8 min-[1600px]:shrink-0 min-[1600px]:gap-4">
+            <div className="grid w-full grid-cols-3 items-start gap-3 sm:flex sm:w-auto sm:flex-nowrap sm:justify-center sm:gap-8 xl:shrink-0 xl:gap-[clamp(8px,1vw,16px)]">
               {[
                 { src: "/images/feature-meals.png", label: "Meals Included" },
                 { src: "/images/feature-training.png", label: "Training Materials" },
                 { src: "/images/feature-certificate.png", label: "Certificate of Completion" },
               ].map(({ src, label }) => (
-                <div key={label} className="flex flex-col items-center gap-3 text-center sm:w-36 min-[1600px]:w-[124px]">
+                <div key={label} className="flex flex-col items-center gap-3 text-center sm:w-36 xl:w-[clamp(85px,7.4vw,140px)]">
                   <Image
                     src={src}
                     alt=""
                     width={56}
                     height={56}
-                    className="h-12 w-12 shrink-0 object-contain sm:h-14 sm:w-14"
+                    className="h-12 w-12 shrink-0 object-contain sm:h-14 sm:w-14 xl:h-[clamp(40px,3vw,56px)] xl:w-[clamp(40px,3vw,56px)]"
                   />
-                  <span className="text-sm font-bold uppercase leading-snug tracking-wide text-navy-600 sm:text-base">
+                  <span className="text-sm font-bold uppercase leading-snug tracking-wide text-navy-600 sm:text-base xl:text-[clamp(12px,.85vw,16px)]">
                     {label}
                   </span>
                 </div>
               ))}
             </div>
 
-            <Link href="/register" className="btn-accent whitespace-nowrap px-6 py-4 text-lg font-bold sm:px-10 sm:py-5 sm:text-xl min-[1600px]:w-[360px] min-[1600px]:shrink-0 min-[1600px]:px-4">
+            <Link href="/register" className="btn-accent whitespace-nowrap px-6 py-4 text-lg font-bold sm:px-10 sm:py-5 sm:text-xl xl:w-[clamp(260px,19.5vw,370px)] xl:shrink-0 xl:px-4 xl:text-[clamp(16px,1.05vw,20px)]">
               Reserve Your Spot Now
             </Link>
           </div>
